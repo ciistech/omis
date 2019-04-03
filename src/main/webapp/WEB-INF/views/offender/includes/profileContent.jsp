@@ -180,38 +180,7 @@
 		</div>
 	</div>
 	
-	
-	
-	<%-- Health --%>
-	<div class="profileItems">
-		<h2>
-			<a class="actionMenuItem profileActionMenuItem" id="profileHealthActionMenuLink" href="${pageContext.request.contextPath}/offender/profileHealthActionMenu.html?offender=${offender.id}"></a>
-			<fmt:message key="healthLabel"/>
-		</h2>
-		<div class="profileItemsWrapper">
-			<div class="profileItemsInnerWrapper">
-				<c:forEach var="profileItem" items="${healthProfileItemRegistry.items}">
-					<c:if test="${profileItem.enabled}">
-						<c:set var="offenderSummary" value="${offender}" scope="request" />
-						<c:set var="authorized" value="${false}"/>
-						<c:forEach var="requiredAuthorization" items="${profileItem.requiredAuthorizations}">
-							<sec:authorize access="hasRole('${requiredAuthorization}')">
-								<c:set var="authorized" value="${true}"/>
-							</sec:authorize>
-						</c:forEach>
-						<c:if test="${authorized}">
-							<div class="profileItemContainer">
-								<jsp:include page="${profileItem.includePage}"/>
-							</div>
-						</c:if>
-					</c:if>
-				</c:forEach>
-			</div>
-		</div>
-	</div>
-	
-	
-	
+
 	<%-- Relationships --%>
 	<div class="profileItems">
 		<h2>
@@ -221,37 +190,6 @@
 		<div class="profileItemsWrapper">
 			<div class="profileItemsInnerWrapper">
 				<c:forEach var="profileItem" items="${relationshipsProfileItemRegistry.items}">
-					<c:if test="${profileItem.enabled}">
-						<c:set var="offenderSummary" value="${offender}" scope="request" />
-						<c:set var="authorized" value="${false}"/>
-						<c:forEach var="requiredAuthorization" items="${profileItem.requiredAuthorizations}">
-							<sec:authorize access="hasRole('${requiredAuthorization}')">
-								<c:set var="authorized" value="${true}"/>
-							</sec:authorize>
-						</c:forEach>
-						<c:if test="${authorized}">
-							<div class="profileItemContainer">
-								<jsp:include page="${profileItem.includePage}"/>
-							</div>
-						</c:if>
-					</c:if>
-				</c:forEach>
-			</div>
-		</div>
-	</div>
-	
-	
-	
-	
-	<%-- BOPP --%>
-	<div class="profileItems">
-		<h2>
-			<a class="actionMenuItem profileActionMenuItem" id="profileBoppActionMenuLink" href="${pageContext.request.contextPath}/offender/profileBoppActionMenu.html?offender=${offender.id}"></a>
-			<fmt:message key="boardOfPardonsAndParoleLabel"/>
-		</h2>
-		<div class="profileItemsWrapper">
-			<div class="profileItemsInnerWrapper">
-				<c:forEach var="profileItem" items="${boardOfPardonsAndParoleProfileItemRegistry.items}">
 					<c:if test="${profileItem.enabled}">
 						<c:set var="offenderSummary" value="${offender}" scope="request" />
 						<c:set var="authorized" value="${false}"/>

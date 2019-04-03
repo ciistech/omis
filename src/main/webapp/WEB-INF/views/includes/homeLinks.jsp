@@ -132,12 +132,14 @@
 			</sec:authorize> --%>
 		</ul>
 		<ul class="content homeLinksListContainer">
+			<sec:authorize access="(hasRole('ADMIN') and hasRole('APP_DEV'))">
 			<li>
 				<a href="${pageContext.request.contextPath}/health/referral/referralCenter.html">
 					<img src="${pageContext.request.contextPath}/resources/common/images/medicalCenter.png" />
 					<span class="label"><fmt:message key="facilityHealthReferralCenter"/></span>
 				</a>
 			</li>
+			</sec:authorize>
 			<sec:authorize access="(hasRole('ADMIN') and hasRole('APP_DEV'))">
 			<li>
 				<a href="${pageContext.request.contextPath}/bopp/home.html">
@@ -146,12 +148,14 @@
 				</a>
 			</li>
 			</sec:authorize>
+			<sec:authorize access="(hasRole('ADMIN') and hasRole('APP_DEV'))">
 			<li>
 				<a href="${pageContext.request.contextPath}/presentenceInvestigation/request/list.html">
 					<!-- <img src="${pageContext.request.contextPath}/resources/common/images/??.png" />-->
 					<span class="label"><fmt:message key="presentenceInvestigations"/></span>
 				</a>
 			</li>
+			</sec:authorize>
 			<sec:authorize access="(hasRole('ADMIN') or hasRole('VISIT_LIST'))">
 			<li>
 				<a href="${pageContext.request.contextPath}/visitation/facility/list.html">

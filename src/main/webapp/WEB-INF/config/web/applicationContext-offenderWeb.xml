@@ -17,7 +17,7 @@
     <constructor-arg name="defaultEnabled" value="true"/>
   </bean>
   <bean id="placementProfileItemRegistry" class="omis.web.profile.ProfileItemRegistry">
-    <constructor-arg name="defaultEnabled" value="true"/>
+    <constructor-arg name="defaultEnabled" value="false"/>
   </bean>
   <bean id="legalProfileItemRegistry" class="omis.web.profile.ProfileItemRegistry">
     <constructor-arg name="defaultEnabled" value="true"/>
@@ -32,13 +32,13 @@
     <constructor-arg name="defaultEnabled" value="true"/>
   </bean>
   <bean id="healthProfileItemRegistry" class="omis.web.profile.ProfileItemRegistry">
-    <constructor-arg name="defaultEnabled" value="true"/>
+    <constructor-arg name="defaultEnabled" value="false"/>
   </bean>
   <bean id="relationshipsProfileItemRegistry" class="omis.web.profile.ProfileItemRegistry">
     <constructor-arg name="defaultEnabled" value="true"/>
   </bean>
   <bean id="boardOfPardonsAndParoleProfileItemRegistry" class="omis.web.profile.ProfileItemRegistry">
-    <constructor-arg name="defaultEnabled" value="true"/>
+    <constructor-arg name="defaultEnabled" value="false"/>
   </bean>
 	
 	

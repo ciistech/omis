@@ -140,7 +140,7 @@
   						<c:set var="rows" value="7"/>
   					</c:otherwise>
   				</c:choose>
-  				<td rowspan="${rows}"><img height="150" src="${pageContext.request.contextPath}/resources/common/images/logo.gif" alt="Logo Not Found" /></td>
+  				<td rowspan="${rows}"></td>
   				<td colspan="2"><h2><fmt:message key="loginHeader"/></h2></td>
   			</tr>
   			<tr>
@@ -201,7 +201,7 @@
   		</tbody>
   	</table>
   	<p id="disclaimer">
-  		<fmt:message key="disclaimerText"/>
+  		
   	</p>	  		
   </form>  
   </body>
