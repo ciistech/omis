@@ -182,4 +182,51 @@ public class BookingImpl implements Booking {
 		return this.county;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(final Object obj) {
+		boolean result;
+		if (this == obj) {
+			result = true;
+		} else {
+			if (!(obj instanceof Booking)) {
+				result = false;
+			} else {
+				Booking that = (Booking) obj;
+				this.checkState();
+				
+				result = (this.getOffender().equals(that.getOffender())
+						&& this.getBookingNumber().equals(that.getBookingNumber())
+						&& this.getDate().equals(that.getDate()) ? true : false);
+			}
+		}
+		return result;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		int hashCode = 14;
+		this.checkState();
+		hashCode = 29 * hashCode + this.getOffender().hashCode();
+		hashCode = 29 * hashCode + this.getDate().hashCode();
+		hashCode = 29 * hashCode + this.getBookingNumber().hashCode();
+		
+		return hashCode;
+	}
+	
+	/* Checks state. */
+	private void checkState() {
+		if (this.getBookingNumber() == null) {
+			throw new IllegalStateException("Booking number required.");
+		}
+		
+		if (this.getDate() == null) {
+			throw new IllegalStateException("Date required.");
+		}
+		
+		if (this.getOffender() == null) {
+			throw new IllegalStateException("Offender required.");
+		}
+	}
 }

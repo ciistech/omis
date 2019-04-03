@@ -68,4 +68,47 @@ public class BookingCommitSourceCategoryImpl implements BookingCommitSourceCateg
 		return this.valid;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(final Object obj) {
+		boolean result;
+		
+		if (this == obj) {
+			result = true;
+		} else {
+			if (!(obj instanceof BookingCommitSourceCategory)) {
+				result = false;
+			} else {
+				BookingCommitSourceCategory that = 
+						(BookingCommitSourceCategory) obj;
+				this.checkState();
+				
+				result = (this.getName().equals(that.getName())
+						&& this.getValid().equals(that.getValid()) ? true : 
+							false);
+			}
+		}
+		return result;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		int hashCode = 14;
+		this.checkState();
+		hashCode = 29 * hashCode + this.getName().hashCode();
+		hashCode = 29 * hashCode + this.getValid().hashCode();
+		return hashCode;
+	}
+	
+	/* Checks state. */
+	private void checkState() {
+		if (this.getName() == null) {
+			throw new IllegalStateException("Name required.");
+		}
+		
+		if (this.getValid() == null) {
+			throw new IllegalStateException("Valid required.");
+		}
+	}
 }

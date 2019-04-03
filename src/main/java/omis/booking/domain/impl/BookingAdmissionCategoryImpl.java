@@ -68,4 +68,47 @@ public class BookingAdmissionCategoryImpl implements BookingAdmissionCategory {
 	public Boolean getValid() {
 		return this.valid;
 	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(Object obj) {
+		boolean result;
+		
+		if (this == obj) {
+			result = true;
+		} else {
+			if (!(obj instanceof BookingAdmissionCategory)) {
+				result = false;
+			} else {
+				BookingAdmissionCategory that = (BookingAdmissionCategory) obj;
+				this.checkState();
+	
+				 result = (this.getName().equals(that.getName())
+						 && this.getValid().equals(that.getValid()) ? true : 
+							 false);
+			}
+		}	
+		return result;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		int hashCode = 14;
+		this.checkState();
+		hashCode = 29 * hashCode + this.getName().hashCode();
+		hashCode = 29 * hashCode + this.getValid().hashCode();
+		return hashCode;
+	}
+	
+	/* Check state. */
+	private void checkState() {
+		if (this.getName() == null) {
+			throw new IllegalStateException("Name required.");
+		}
+		
+		if (this.getValid() == null) {
+			throw new IllegalStateException("Valid required.");
+		}
+	}
 }
