@@ -4,7 +4,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<fmt:bundle basename="omis.mentalhealthreview.msgs.MentalHealthReview">
+<fmt:bundle basename="omis.mentalhealthreview.msgs.mentalHealthReview">
 	<div class="profileItem">
 		<a href="${pageContext.request.contextPath}/mentalHealthReview/list.html?offender=${offenderSummary.id}">
 			<span>
