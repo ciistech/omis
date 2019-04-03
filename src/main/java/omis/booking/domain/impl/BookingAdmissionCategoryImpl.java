@@ -17,15 +17,13 @@
  */
 package omis.booking.domain.impl;
 
-import java.io.Serializable;
-
 import omis.booking.domain.BookingAdmissionCategory;
 
 /** Implementation of Booking Admission Category.
  * @author Ryan Johns
  * @version 0.1.0 (Apr 2, 2019)
  * @since OMIS 3.0*/
-public class BookingAdmissionCategoryImpl implements BookingAdmissionCategory, Serializable {
+public class BookingAdmissionCategoryImpl implements BookingAdmissionCategory {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;

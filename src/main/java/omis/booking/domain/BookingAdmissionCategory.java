@@ -1,10 +1,12 @@
 package omis.booking.domain;
 
+import java.io.Serializable;
+
 /** Booking admission category.
  * @author Ryan Johns
  * @version 0.1.0 (Apr 2, 2019)
  * @since OMIS 3.0 */
-public interface BookingAdmissionCategory {
+public interface BookingAdmissionCategory extends Serializable {
 	/** Sets the ID of booking admission category.
 	 * @param id booking admission category. */
 	void setId(Long id);

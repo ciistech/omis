@@ -15,4 +15,7 @@
 		<property name="valid" column="`VALID`" not-null="false"
 			type="yes_no" />
 	</class>
+	<query name="findBookingAdmissionCategories"><![CDATA[
+		from omis.booking.domain.BookingAdmissionCategory
+	]]></query>
 </hibernate-mapping>
