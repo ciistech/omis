@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="omis.booking.domain">
+	<class entity-name="omis.booking.domain.BookingNote"
+		proxy="omis.booking.domain.BookingNote" name="omis.booking.domain.impl.BookingNoteImpl"
+		table="BOOKING_NOTE">
+		<id name="id" column="`ID`" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">`BOOKING_SEQ`</param>
+			</generator>
+		</id>
+		<many-to-one name="booking" column="`BOOKING_ID`" not-null="true" entity-name="omis.booking.domain.Booking" />
+		<property name="description" column="`DESCRIPTION`" not-null="true" type="string" />
+		<property name="date" column="`DATE`" not-null="true"/>
+		<component name="creationSignature">
+			<many-to-one name="userAccount" column="`CREATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`CREATE_DATE`" not-null="true" />
+		</component>
+		<component name="updateSignature">
+			<many-to-one name="userAccount" column="`UPDATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`UPDATE_DATE`" not-null="true" />
+		</component>
+	</class>
+</hibernate-mapping>

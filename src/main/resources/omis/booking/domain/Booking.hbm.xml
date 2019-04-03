@@ -5,7 +5,7 @@
 <hibernate-mapping package="omis.booking.domain">
 	<class entity-name="omis.booking.domain.Booking"
 		proxy="omis.booking.domain.Booking" name="omis.booking.domain.impl.BookingImpl"
-		table="BOOKING_COMMIT_SOURCE_CATEGORY">
+		table="BOOKING">
 		<id name="id" column="`ID`" type="java.lang.Long">
 			<generator class="sequence">
 				<param name="sequence">`BOOKING_SEQ`</param>
