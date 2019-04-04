@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="omis.patsearch.domain">
+	<class entity-name="omis.patsearch.domain.PatSearch"
+		proxy="omis.patsearch.domain.PatSearch" name="omis.patsearch.domain.impl.PatSearchImpl"
+		table="PAT_SEARCH">
+		<id name="id" column="`ID`" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">`PAT_SEARCH_SEQ`</param>
+			</generator>
+		</id>
+		<many-to-one name="offender" column="`OFFENDER_ID`" not-null="true" entity-name="omis.offender.domain.Offender"/>
+		<many-to-one name="booking" column="`BOOKING_ID`" not-null="false" entity-name="omis.booking.domain.Booking"/>
+		<property name="date" column="`DATE`" not-null="true"/>
+		<many-to-one name="officer" column="`OFFICER_STAFF_ID`" not-null="true" entity-name="omis.staff.domain.StaffAssignment"/>
+		<component name="creationSignature">
+			<many-to-one name="userAccount" column="`CREATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`CREATE_DATE`" not-null="true" />
+		</component>
+		<component name="updateSignature">
+			<many-to-one name="userAccount" column="`UPDATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`UPDATE_DATE`" not-null="true" />
+		</component>
+	</class>
+	<query name="findPatSearchByOffenderDateAndStaffAssignment"><![CDATA[
+		from omis.patsearch.domain.PatSearch patSearch
+		where patSearch.offender = :offender
+		and patSearch.date = :date
+		and officer = :officer
+	]]></query>
+	<query name="findPatSearchByBooking"><![CDATA[
+		from omis.patsearch.domain.PatSearch patSearch
+		where patSearch.booking = :booking
+	]]></query>
+</hibernate-mapping>

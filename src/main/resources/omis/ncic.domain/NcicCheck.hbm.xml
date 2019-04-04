@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="omis.ncic.domain">
+	<class entity-name="omis.ncic.domain.NcicCheck"
+		proxy="omis.ncic.domain.NcicCheck" name="omis.ncic.domain.impl.NcicCheckImpl"
+		table="NCIC_CHECK">
+		<id name="id" column="`ID`" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">`NCIC_CHECK_SEQ`</param>
+			</generator>
+		</id>
+		<many-to-one name="offender" column="`OFFENDER_ID`" not-null="true" entity-name="omis.offender.domain.Offender"/>
+		<many-to-one name="booking" column="`BOOKING_ID`" not-null="false" entity-name="omis.booking.domain.Booking"/>
+		<property name="date" column="`DATE`" not-null="true"/>
+		<many-to-one name="officer" column="`OFFICER_STAFF_ID`" not-null="true" entity-name="omis.staff.domain.StaffAssignment"/>
+		<many-to-one name="result" column="`NCIC_CHECK_RESULT_ID`" not-null="true" entity-name="omis.ncic.domain.NcicCheckResult"/>
+		<component name="creationSignature">
+			<many-to-one name="userAccount" column="`CREATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`CREATE_DATE`" not-null="true" />
+		</component>
+		<component name="updateSignature">
+			<many-to-one name="userAccount" column="`UPDATE_ACCOUNT_ID`"
+				not-null="true" />
+			<property name="date" column="`UPDATE_DATE`" not-null="true" />
+		</component>
+	</class>
+	<query name="findNCICCheckByOffenderDate"><![CDATA[
+		from omis.ncic.domain.NcicCheck ncicCheck
+		where ncicCheck.offender = :offender
+		and ncicCheck.date = :date
+	]]></query>
+	<query name="findNCICCHeckByBooking"><![CDATA[
+		from omis.ncic.domain.NcicCheck ncicCheck
+		where ncicCheck.booking = :booking
+	]]></query>
+</hibernate-mapping>
