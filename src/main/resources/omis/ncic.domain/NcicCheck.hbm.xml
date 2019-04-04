@@ -32,7 +32,7 @@
 		where ncicCheck.offender = :offender
 		and ncicCheck.date = :date
 	]]></query>
-	<query name="findNCICCHeckByBooking"><![CDATA[
+	<query name="findNCICCheckByBooking"><![CDATA[
 		from omis.ncic.domain.NcicCheck ncicCheck
 		where ncicCheck.booking = :booking
 	]]></query>
