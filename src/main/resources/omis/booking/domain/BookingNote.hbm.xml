@@ -25,4 +25,14 @@
 			<property name="date" column="`UPDATE_DATE`" not-null="true" />
 		</component>
 	</class>
+	<query name="findBookingNoteByBooking"><![CDATA[
+		from omis.booking.domain.BookingNote bookingNote
+		where bookingNote.booking = :booking
+	]]></query>
+	<query name="findBookingNoteByBookingDateAndDescription"><![CDATA[
+		from omis.booking.domain.BookingNote bookingNote
+		where bookingNote.booking = :booking
+		and bookingNote.description = :description
+		and bookingNote.date = :date
+	]]></query>
 </hibernate-mapping>
