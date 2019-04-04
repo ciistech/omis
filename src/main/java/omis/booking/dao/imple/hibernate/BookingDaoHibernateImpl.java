@@ -17,22 +17,48 @@
  */
 package omis.booking.dao.imple.hibernate;
 
+import java.util.Date;
+
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import omis.booking.dao.BookingDao;
 import omis.booking.domain.Booking;
 import omis.dao.impl.hibernate.GenericHibernateDaoImpl;
+import omis.offender.domain.Offender;
 
 /** Hibernate implementation of booking dao.
  * @author Ryan Johns
  * @version 0.1.0 (Apr 2, 2019)
  * @since OMIS 3.0 */
-public class BookingDaoHibernateImpl extends GenericHibernateDaoImpl<Booking> implements BookingDao {
-
+public class BookingDaoHibernateImpl extends GenericHibernateDaoImpl<Booking> 
+	implements BookingDao {
+	private static final String 
+		FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_QUERY_NAME 
+		= "findBookingByOffenderDateAndBookingNumber";
+	private static final String OFFENDER_PARAM_NAME = "offender";
+	private static final String DATE_PARAM_NAME = "date";
+	private static final String BOOKING_NUMBER_PARAM_NAME = "bookingNumber";
+	
 	/** Constructor.
 	 * @param sessionFactory session factory.
 	 * @param entityName entity name. */
-	public BookingDaoHibernateImpl(final SessionFactory sessionFactory, final String entityName) {
+	public BookingDaoHibernateImpl(final SessionFactory sessionFactory, 
+			final String entityName) {
 		super(sessionFactory, entityName);
+	}
+	
+
+	/** {@inheritDoc} */
+	@Override
+	public Booking findByOffenderDateAndBookingNumber(final Offender offender,
+			final Date date, final Integer bookingNumber) {
+		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
+				FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_QUERY_NAME);
+		
+		q.setEntity(OFFENDER_PARAM_NAME, offender);
+		q.setEntity(DATE_PARAM_NAME, date);
+		q.setEntity(BOOKING_NUMBER_PARAM_NAME, bookingNumber);
+		return (Booking) q.uniqueResult();
 	}
 }

@@ -17,8 +17,11 @@
  */
 package omis.booking.dao;
 
+import java.util.Date;
+
 import omis.booking.domain.Booking;
 import omis.dao.GenericDao;
+import omis.offender.domain.Offender;
 
 /** Data access object for Booking.
  * @author Ryan Johns
@@ -26,4 +29,11 @@ import omis.dao.GenericDao;
  * @since OMIS 3.0 */
 public interface BookingDao extends GenericDao<Booking> {
 	
+	/** Finds booking by offender, date and booking number.
+	 * @param offender - offender.
+	 * @param date - date.
+	 * @param bookingNumber - booking number.
+	 * @return booking. */
+	Booking findByOffenderDateAndBookingNumber(Offender offender, Date date,
+			Integer bookingNumber);
 }
