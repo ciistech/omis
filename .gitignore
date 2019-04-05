@@ -24,19 +24,15 @@ src/main/webapp/WEB-INF/lib/
 # Excludes dev, test, prod and preprod environments - these configurations are
 # organization specific and should not be available in a public repository
 src/main/webapp/WEB-INF/config/env/dev/application.properties
-src/main/webapp/WEB-INF/config/env/dev/hibernate.properties
 src/main/webapp/WEB-INF/config/env/dev/security.properties
 src/main/webapp/WEB-INF/config/env/dev/report.properties
 src/main/webapp/WEB-INF/config/env/test/application.properties
-src/main/webapp/WEB-INF/config/env/test/hibernate.properties
 src/main/webapp/WEB-INF/config/env/test/security.properties
 src/main/webapp/WEB-INF/config/env/test/report.properties
 src/main/webapp/WEB-INF/config/env/prod-common/security.properties
 src/main/webapp/WEB-INF/config/env/prod-common/report.properties
 src/main/webapp/WEB-INF/config/env/prod/application.properties
-src/main/webapp/WEB-INF/config/env/prod/hibernate.properties
 src/main/webapp/WEB-INF/config/env/preprod/application.properties
-src/main/webapp/WEB-INF/config/env/preprod/hibernate.properties
 
 # Excludes Derby log
 # TODO - Configure Derby log to be located outside of the project, remove this
