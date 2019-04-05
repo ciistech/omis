@@ -26,7 +26,12 @@ import omis.booking.domain.BookingCommitSourceCategory;
 import omis.booking.domain.BookingNote;
 import omis.booking.exception.BookingExistsException;
 import omis.booking.exception.BookingNoteExistsException;
+import omis.ncic.domain.NcicCheck;
+import omis.ncic.domain.NcicCheckResult;
+import omis.ncic.exception.NcicCheckExistsException;
 import omis.offender.domain.Offender;
+import omis.patsearch.domain.PatSearch;
+import omis.patsearch.exception.PatSearchExistsException;
 import omis.region.domain.County;
 import omis.staff.domain.StaffAssignment;
 import omis.supervision.domain.CorrectionalStatus;
@@ -98,6 +103,59 @@ public interface BookingService {
 	 * @param bookingNote - booking note. */
 	void removeBookingNote(BookingNote bookingNote);
 	
+	/** Creates pat search.
+	 * @param offender - offender.
+	 * @param date - date.
+	 * @param officer - officer.
+	 * @param booking - booking.
+	 * @return pat search.
+	 * @throws PatSearchExistsException - when pat search exists. */
+	PatSearch createPatSearch(Offender offender, Date date, 
+			StaffAssignment officer, Booking booking) 
+		throws PatSearchExistsException;
+	
+	/** Updates pat search.
+	 * @param patSearch - pat search.
+	 * @param date - date.
+	 * @param officer - staff assignment.
+	 * @return pat search.
+	 * @throws PatSearchExistsException - when pat search exists. */
+	PatSearch updatePatSearch(PatSearch patSearch, Date date,
+			StaffAssignment officer) throws PatSearchExistsException;
+	
+	/** removes pat search.
+	 * @param patSearch - pat search. */
+	void removePatSearch(PatSearch patSearch);
+	
+	/** Creates NCIC Check.
+	 * @param booking - booking.
+	 * @param date - date.
+	 * @param offender - offender.
+	 * @param result - ncic check result.
+	 * @return ncic check.
+	 * @throws NcicCheckExistsException - when ncic check exists. */
+	NcicCheck createNcicCheck(Booking booking, Date date,
+			Offender offender, NcicCheckResult result) 
+					throws NcicCheckExistsException;
+	
+	/** Updates NCIC Check.
+	 * @param ncicCheck - ncic check.
+	 * @param date - date.
+	 * @param result - ncic check result.
+	 * @return ncic check.
+	 * @throws NcicCheckExistsException - when ncic check exists. */
+	NcicCheck updateNcicCheck(NcicCheck ncicCheck, Date date,
+			NcicCheckResult ncicCheckResult) throws NcicCheckExistsException;
+	
+	/** Removes NCIC Check.
+	 * @param ncic check - ncic check. */
+	void removeNcicCheck(NcicCheck ncicCheck);
+	
+	/** Finds pat search by booking.
+	 * @param booking - booking
+	 * @return pat searches. */
+	List<PatSearch> findPatSearchByBooking(Booking booking);
+	
 	/** Finds booking admission categories.
 	 * @return booking admission categories. */
 	List<BookingAdmissionCategory> findBookingAdmissionCategories();
@@ -105,4 +163,13 @@ public interface BookingService {
 	/** Find booking commit source category.
 	 * @return booking commit source categories. */
 	List<BookingCommitSourceCategory> findBookingCommitSourceCategories();
+	
+	/** Find ncic check results.
+	 * @return ncic check results. */
+	List<NcicCheckResult> findNcicCheckResults();
+	
+	/** Find ncic checks by booking.
+	 * @param booking - booking.
+	 * @return ncic checks. */
+	List<NcicCheck> findNcicChecksByBooking(Booking booking);
 }
