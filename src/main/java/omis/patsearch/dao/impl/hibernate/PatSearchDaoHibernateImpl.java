@@ -41,10 +41,14 @@ public class PatSearchDaoHibernateImpl
 			= "findPatSearchByOffenderDateAndStaffAssignment";
 	private static final String FIND_BY_BOOKING_QUERY_NAME 
 		= "findPatSearchByBooking";
+	private static final String 
+		FIND_BY_OFFENDER_DATE_AND_STAFF_ASSIGNMENT_EXCLUDING_QUERY_NAME
+		= "findPatSearchByOffenderDateAndStaffAssignmentExcluding";
 	private static final String OFFENDER_PARAM_NAME = "offender";
 	private static final String OFFICER_PARAM_NAME = "officer";
 	private static final String DATE_PARAM_NAME = "date";
 	private static final String BOOKING_PARAM_NAME = "booking";
+	private static final String PAT_SEARCH_PARAM_NAME = "patSearch";
 	
 	/** Constructor.
 	 * @param sessionFactory - session factory.
@@ -64,6 +68,19 @@ public class PatSearchDaoHibernateImpl
 		q.setTimestamp(DATE_PARAM_NAME, date);
 		q.setEntity(OFFICER_PARAM_NAME, officer);
 		return (PatSearch) q.uniqueResult();
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public PatSearch findByOffenderDateAndOfficerExcluding(final Offender offender,
+			final Date date, final StaffAssignment officer, final PatSearch patSearch) {
+		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
+				FIND_BY_OFFENDER_DATE_AND_STAFF_ASSIGNMENT_EXCLUDING_QUERY_NAME);
+				q.setEntity(OFFENDER_PARAM_NAME, offender);
+				q.setTimestamp(DATE_PARAM_NAME, date);
+				q.setEntity(OFFICER_PARAM_NAME, officer);
+				q.setEntity(PAT_SEARCH_PARAM_NAME, patSearch);
+				return (PatSearch) q.uniqueResult();
 	}
 
 	/** {@inheritDoc} */

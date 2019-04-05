@@ -35,4 +35,11 @@
 		and bookingNote.description = :description
 		and bookingNote.date = :date
 	]]></query>
+	<query name="findBookingNoteByBookingDateAndDescriptionExcluding"><![CDATA[
+		from omis.booking.domain.BookingNote bookingNote
+		where bookingNote.booking = :booking
+		and bookingNote.description = :description
+		and bookingNote.date = :date
+		and bookingNote <> :excluding
+	]]></query>
 </hibernate-mapping>

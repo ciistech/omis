@@ -36,4 +36,13 @@ public interface BookingDao extends GenericDao<Booking> {
 	 * @return booking. */
 	Booking findByOffenderDateAndBookingNumber(Offender offender, Date date,
 			Integer bookingNumber);
+	
+	/** Finds booking by offender, date and booking number excluding.
+	 * @param offender - offender.
+	 * @param date - date.
+	 * @param bookingNumber - booking number.
+	 * @param excluding - excluding booking.
+	 * @return booking. */
+	Booking findByOffenderDateAndBookingNumberExcluding(Offender offender, 
+			Date date, Integer bookingNumber, Booking excluding);
 }

@@ -39,6 +39,14 @@ public interface PatSearchDao extends GenericDao<PatSearch> {
 	PatSearch findByOffenderDateAndOfficer(Offender offender, Date date, 
 			StaffAssignment officer);
 	
+	/** find by offender date and officer excluding.
+	 * @param offender - offender.
+	 * @param date - date.
+	 * @param officer - officer.
+	 * @param excluding - excluding pat search.
+	 * @return pat search. */
+	PatSearch findByOffenderDateAndOfficerExcluding(Offender offender, Date date,
+			StaffAssignment officer, PatSearch patSearch);
 	/** Finds pat searches by booking.
 	 * @param booking - booking.
 	 * @return pat searches. */

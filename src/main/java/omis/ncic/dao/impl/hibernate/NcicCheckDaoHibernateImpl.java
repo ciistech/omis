@@ -38,9 +38,13 @@ public class NcicCheckDaoHibernateImpl
 	private static final String FIND_BY_OFFENDER_AND_DATE_QUERY_NAME = 
 			"findNCICCheckByOffenderDate";
 	private static final String FIND_BY_BOOKING = "findNCICCheckByBooking";
+	private static final String FIND_BY_OFFENDER_AND_DATE_EXCLUDING_QUERY_NAME 
+		= "findNCICCheckByOffenderDateExcluding";
 	private static final String OFFENDER_PARAM_NAME = "offender";
 	private static final String DATE_PARAM_NAME = "date";
 	private static final String BOOKING_PARAM_NAME = "booking";
+	private static final String EXCLUDING_PARAM_NAME = "excluding";
+	
 	/** Constructor.
 	 * @param sessionFactory - session factory.
 	 * @param entityName - entity name. */
@@ -56,6 +60,18 @@ public class NcicCheckDaoHibernateImpl
 				FIND_BY_OFFENDER_AND_DATE_QUERY_NAME);
 		q.setEntity(OFFENDER_PARAM_NAME, offender);
 		q.setTimestamp(DATE_PARAM_NAME, date);
+		return (NcicCheck) q.uniqueResult();
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public NcicCheck findByOffenderAndDateExcluding(final Offender offender,
+			final Date date, final NcicCheck excluding) {
+		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
+				FIND_BY_OFFENDER_AND_DATE_EXCLUDING_QUERY_NAME);
+		q.setEntity(OFFENDER_PARAM_NAME, offender);
+		q.setTimestamp(DATE_PARAM_NAME, date);
+		q.setEntity(EXCLUDING_PARAM_NAME, excluding);
 		return (NcicCheck) q.uniqueResult();
 	}
 	

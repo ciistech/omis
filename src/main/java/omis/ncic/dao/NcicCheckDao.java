@@ -36,6 +36,14 @@ public interface NcicCheckDao extends GenericDao<NcicCheck> {
 	 * @return ncic check. */
 	NcicCheck findByOffenderAndDate(Offender offender, Date date);
 	
+	/** Find by offender and date excluding.
+	 * @param offender - offender.
+	 * @param date - date.
+	 * @param excluding - excluding ncic check. 
+	 * @return ncic check. */
+	NcicCheck findByOffenderAndDateExcluding(Offender offender, Date date, 
+			NcicCheck ncicCheck);
+	
 	/** Find by booking.
 	 * @param booking - booking
 	 * @return ncic checks. */
