@@ -36,4 +36,11 @@
 		and booking.date = :date
 		and booking.bookingNumber = :bookingNumber
 	]]></query>
+	<query name="findBookingByOffenderDateAndBookingNumberExcluding"><![CDATA[
+		from omis.booking.domain.Booking booking
+		where booking.offender = :offender
+		and booking.date = :date
+		and booking.bookingNumber = :bookingNumber
+		and booking <> :excluding
+	]]></query>
 </hibernate-mapping>

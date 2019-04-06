@@ -15,34 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package omis.booking.dao;
+package omis.patsearch.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import omis.booking.domain.Booking;
 import omis.dao.GenericDao;
 import omis.offender.domain.Offender;
+import omis.patsearch.domain.PatSearch;
+import omis.staff.domain.StaffAssignment;
 
-/** Data access object for Booking.
+/** Data access object for pat search.
  * @author Ryan Johns
- * @version 0.1.0 (Apr 2, 2019)
+ * @version 0.1.0 (Apr 4, 2019)
  * @since OMIS 3.0 */
-public interface BookingDao extends GenericDao<Booking> {
-	
-	/** Finds booking by offender, date and booking number.
+public interface PatSearchDao extends GenericDao<PatSearch> {
+	/** Find by Offender Date and officer.
 	 * @param offender - offender.
 	 * @param date - date.
-	 * @param bookingNumber - booking number.
-	 * @return booking. */
-	Booking findByOffenderDateAndBookingNumber(Offender offender, Date date,
-			Integer bookingNumber);
+	 * @param officer - officer
+	 * @return pat search. */
+	PatSearch findByOffenderDateAndOfficer(Offender offender, Date date, 
+			StaffAssignment officer);
 	
-	/** Finds booking by offender, date and booking number excluding.
+	/** find by offender date and officer excluding.
 	 * @param offender - offender.
 	 * @param date - date.
-	 * @param bookingNumber - booking number.
-	 * @param excluding - excluding booking.
-	 * @return booking. */
-	Booking findByOffenderDateAndBookingNumberExcluding(Offender offender, 
-			Date date, Integer bookingNumber, Booking excluding);
+	 * @param officer - officer.
+	 * @param excluding - excluding pat search.
+	 * @return pat search. */
+	PatSearch findByOffenderDateAndOfficerExcluding(Offender offender, Date date,
+			StaffAssignment officer, PatSearch patSearch);
+	/** Finds pat searches by booking.
+	 * @param booking - booking.
+	 * @return pat searches. */
+	List<PatSearch> findByBooking(Booking booking);
 }

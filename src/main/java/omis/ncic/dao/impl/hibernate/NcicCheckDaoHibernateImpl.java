@@ -15,68 +15,73 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package omis.booking.dao.imple.hibernate;
+package omis.ncic.dao.impl.hibernate;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
-import omis.booking.dao.BookingDao;
 import omis.booking.domain.Booking;
 import omis.dao.impl.hibernate.GenericHibernateDaoImpl;
+import omis.ncic.dao.NcicCheckDao;
+import omis.ncic.domain.NcicCheck;
 import omis.offender.domain.Offender;
 
-/** Hibernate implementation of booking dao.
+/** Hibernate implementation of ncic check dao.
  * @author Ryan Johns
- * @version 0.1.0 (Apr 2, 2019)
+ * @version 0.1.0 (Apr 4, 2019)
  * @since OMIS 3.0 */
-public class BookingDaoHibernateImpl extends GenericHibernateDaoImpl<Booking> 
-	implements BookingDao {
-	private static final String 
-		FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_QUERY_NAME 
-		= "findBookingByOffenderDateAndBookingNumber";
-	private static final String
-		FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_EXCLUDING_QUERY_NAME
-		= "findBookingByOffenderDateAndBookingNumberExcluding";
+public class NcicCheckDaoHibernateImpl 
+	extends GenericHibernateDaoImpl<NcicCheck> implements NcicCheckDao {
+	private static final String FIND_BY_OFFENDER_AND_DATE_QUERY_NAME = 
+			"findNCICCheckByOffenderDate";
+	private static final String FIND_BY_BOOKING = "findNCICCheckByBooking";
+	private static final String FIND_BY_OFFENDER_AND_DATE_EXCLUDING_QUERY_NAME 
+		= "findNCICCheckByOffenderDateExcluding";
 	private static final String OFFENDER_PARAM_NAME = "offender";
 	private static final String DATE_PARAM_NAME = "date";
-	private static final String BOOKING_NUMBER_PARAM_NAME = "bookingNumber";
+	private static final String BOOKING_PARAM_NAME = "booking";
 	private static final String EXCLUDING_PARAM_NAME = "excluding";
 	
 	/** Constructor.
-	 * @param sessionFactory session factory.
-	 * @param entityName entity name. */
-	public BookingDaoHibernateImpl(final SessionFactory sessionFactory, 
+	 * @param sessionFactory - session factory.
+	 * @param entityName - entity name. */
+	public NcicCheckDaoHibernateImpl(final SessionFactory sessionFactory,
 			final String entityName) {
 		super(sessionFactory, entityName);
 	}
 	
-
 	/** {@inheritDoc} */
 	@Override
-	public Booking findByOffenderDateAndBookingNumber(final Offender offender,
-			final Date date, final Integer bookingNumber) {
+	public NcicCheck findByOffenderAndDate(final Offender offender, final Date date) {
 		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
-				FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_QUERY_NAME);
-		
+				FIND_BY_OFFENDER_AND_DATE_QUERY_NAME);
 		q.setEntity(OFFENDER_PARAM_NAME, offender);
 		q.setTimestamp(DATE_PARAM_NAME, date);
-		q.setInteger(BOOKING_NUMBER_PARAM_NAME, bookingNumber);
-		return (Booking) q.uniqueResult();
+		return (NcicCheck) q.uniqueResult();
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public Booking findByOffenderDateAndBookingNumberExcluding(
-			final Offender offender, final Date date, 
-			final Integer bookingNumber, final Booking excluding) {
+	public NcicCheck findByOffenderAndDateExcluding(final Offender offender,
+			final Date date, final NcicCheck excluding) {
 		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
-				FIND_BY_OFFENDER_DATE_AND_BOOKING_NUMBER_EXCLUDING_QUERY_NAME);
+				FIND_BY_OFFENDER_AND_DATE_EXCLUDING_QUERY_NAME);
 		q.setEntity(OFFENDER_PARAM_NAME, offender);
 		q.setTimestamp(DATE_PARAM_NAME, date);
-		q.setInteger(BOOKING_NUMBER_PARAM_NAME, bookingNumber);
 		q.setEntity(EXCLUDING_PARAM_NAME, excluding);
-		return (Booking) q.uniqueResult();
+		return (NcicCheck) q.uniqueResult();
+	}
+	
+	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NcicCheck> findByBooking(final Booking booking) {
+		Query q = this.getSessionFactory().getCurrentSession().getNamedQuery(
+				FIND_BY_BOOKING);
+		q.setEntity(BOOKING_PARAM_NAME, booking);
+		return (List<NcicCheck>) q.list();
 	}
 }

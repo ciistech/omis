@@ -15,34 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package omis.booking.dao;
+package omis.ncic.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import omis.booking.domain.Booking;
 import omis.dao.GenericDao;
+import omis.ncic.domain.NcicCheck;
 import omis.offender.domain.Offender;
 
-/** Data access object for Booking.
+/** Data access object for Ncic check.
  * @author Ryan Johns
- * @version 0.1.0 (Apr 2, 2019)
+ * @version 0.1.0 (Apr 4, 2019)
  * @since OMIS 3.0 */
-public interface BookingDao extends GenericDao<Booking> {
-	
-	/** Finds booking by offender, date and booking number.
+public interface NcicCheckDao extends GenericDao<NcicCheck> {
+	/** Find by offender and date.
 	 * @param offender - offender.
 	 * @param date - date.
-	 * @param bookingNumber - booking number.
-	 * @return booking. */
-	Booking findByOffenderDateAndBookingNumber(Offender offender, Date date,
-			Integer bookingNumber);
+	 * @return ncic check. */
+	NcicCheck findByOffenderAndDate(Offender offender, Date date);
 	
-	/** Finds booking by offender, date and booking number excluding.
+	/** Find by offender and date excluding.
 	 * @param offender - offender.
 	 * @param date - date.
-	 * @param bookingNumber - booking number.
-	 * @param excluding - excluding booking.
-	 * @return booking. */
-	Booking findByOffenderDateAndBookingNumberExcluding(Offender offender, 
-			Date date, Integer bookingNumber, Booking excluding);
+	 * @param excluding - excluding ncic check. 
+	 * @return ncic check. */
+	NcicCheck findByOffenderAndDateExcluding(Offender offender, Date date, 
+			NcicCheck ncicCheck);
+	
+	/** Find by booking.
+	 * @param booking - booking
+	 * @return ncic checks. */
+	List<NcicCheck> findByBooking(Booking booking);
 }

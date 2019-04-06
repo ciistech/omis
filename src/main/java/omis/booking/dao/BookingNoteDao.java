@@ -39,5 +39,14 @@ public interface BookingNoteDao extends GenericDao<BookingNote> {
 	 * @param description - description.
 	 * @return booking note. */
 	BookingNote findByBookingDateAndDescription(Booking booking, Date date, 
-			String Description);
+			String description);
+	
+	/** Finds Booking note by booking, date, and description excluding.
+	 * @param booking - booking.
+	 * @param date - date.
+	 * @param description - description.
+	 * @param excluding - booking note.
+	 * @return booking note. */
+	BookingNote findByBookingDateAndDescriptionExcluding(Booking booking, Date date,
+			String description, BookingNote excluding);
 }

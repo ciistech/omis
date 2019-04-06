@@ -38,9 +38,13 @@ public class BookingNoteDaoHibernateImpl
 			"findBookingNotebyBooking";
 	private static final String FIND_BY_BOOKING_DATE_DESCRIPTION_QUERY_NAME
 		= "findBookingNoteByBookingDateAndDescription";
+	private static final String 
+		FIND_BY_BOOKING_DATE_DESCRIPTION_EXCLUDING_QUERY_NAME
+		= "findBookingNoteByBookingDateAndDescriptionExcluding";
 	private static final String BOOKING_PARAM_NAME = "booking";
 	private static final String DATE_PARAM_NAME = "date";
 	private static final String DESCRIPTION_PARAM_NAME = "description";
+	private static final String EXCLUDING_PARAM_NAME = "excluding";
 	
 	/** Constructor.
 	 * @param sessionFactory - session factory.
@@ -70,6 +74,21 @@ public class BookingNoteDaoHibernateImpl
 		q.setTimestamp(DATE_PARAM_NAME, date);
 		q.setEntity(BOOKING_PARAM_NAME, booking);
 		q.setString(DESCRIPTION_PARAM_NAME, description);
+		return (BookingNote) q.uniqueResult();
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public BookingNote findByBookingDateAndDescriptionExcluding(
+			final Booking booking, final Date date, final String description, 
+			final BookingNote excluding) {
+		Query q = this.getSessionFactory().getCurrentSession()
+				.getNamedQuery(
+						FIND_BY_BOOKING_DATE_DESCRIPTION_EXCLUDING_QUERY_NAME);
+		q.setEntity(BOOKING_PARAM_NAME, booking);
+		q.setTimestamp(DATE_PARAM_NAME, date);
+		q.setString(DESCRIPTION_PARAM_NAME, description);
+		q.setEntity(EXCLUDING_PARAM_NAME, excluding);
 		return (BookingNote) q.uniqueResult();
 	}
 }

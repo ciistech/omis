@@ -36,4 +36,11 @@
 		from omis.patsearch.domain.PatSearch patSearch
 		where patSearch.booking = :booking
 	]]></query>
+	<query name="findPatSearchByOffenderDateAndStaffAssignmentExcluding"><![CDATA[
+	 	from omis.patsearch.domain.PatSearch patSearch
+	 	where patSearch.offender = :offender
+	 	and patSearch.date = :date
+	 	and patSearch.officer = :officer
+	 	and patSearch != :patSearch
+	]]></query>
 </hibernate-mapping>
