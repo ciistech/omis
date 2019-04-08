@@ -25,8 +25,21 @@ import omis.ncic.domain.NcicCheckResult;
  * @since OMIS 3.0 */
 public class NcicCheckResultImpl implements NcicCheckResult {
 	public static final long serialVersionUID = 1L;
+	private Long id;
 	private String name;
 	private Boolean valid;
+	
+	/** {@inheritDoc} */
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public void setId(final Long id) {
+		this.id = id;
+	}
 	
 	/** {@inheritDoc} */
 	@Override

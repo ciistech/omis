@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package omis.booking.dao.imple.hibernate;
+package omis.booking.dao.impl.hibernate;
 
 import java.util.Date;
 

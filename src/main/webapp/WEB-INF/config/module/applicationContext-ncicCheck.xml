@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Instance factories -->
+	
+	<bean id="ncicCheckInstanceFactory"
+		class="omis.instance.factory.hibernate.impl.InstanceFactoryHibernateImpl">
+    	<constructor-arg name="instanceFactoryDelegate" ref="instanceFactoryDelegate"/>
+    	<constructor-arg name="entityName" value="omis.ncic.domain.NcicCheck"/>	
+    </bean>
+
+	<!-- Delegates -->
+	
+	<bean id="ncicCheckDelegate"
+		class="omis.ncic.service.delegate.NcicCheckDelegate">
+		<constructor-arg name="ncicCheckDao" ref="ncicCheckDao"/>
+		<constructor-arg name="ncicCheckResultDao" ref="ncicCheckResultDao"/>
+		<constructor-arg name="ncicCheckInstanceFactory" ref="ncicCheckInstanceFactory"/>
+		<constructor-arg name="auditComponentRetriever" ref="auditComponentRetriever"/>
+	</bean>
+	
+	<!-- Daos -->
+	
+	<bean id="ncicCheckDao"
+		class="omis.ncic.dao.impl.hibernate.NcicCheckDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.ncic.domain.NcicCheck"/>
+	</bean>
+	
+	<bean id="ncicCheckResultDao"
+		class="omis.ncic.dao.impl.hibernate.NcicCheckResultDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.ncic.domain.NcicCheckResult"/>
+	</bean>
+</beans>

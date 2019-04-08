@@ -15,6 +15,6 @@
 		<property name="valid" column="`VALID`" not-null="true" type="yes_no"/>
 	</class>
 	<query name="findNcicCheckResults"><![CDATA[
-		from omis.ncic.domain.NcicCheckResult;
+		from omis.ncic.domain.NcicCheckResult
 	]]></query>
 </hibernate-mapping>

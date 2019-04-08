@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
+    <!-- Services -->
+    
+    <bean id="bookingService"
+    	class="omis.booking.service.impl.BookingServiceImpl">
+    	<constructor-arg name="bookingDelegate" ref="bookingDelegate"/>
+    	<constructor-arg name="bookingNoteDelegate" ref="bookingNoteDelegate"/>
+    	<constructor-arg name="bookingAdmissionCategoryDelegate" ref="bookingAdmissionCategoryDelegate"/>
+    	<constructor-arg name="bookingCommitSourceCategoryDelegate" ref="bookingCommitSourceCategoryDelegate"/>
+    	<constructor-arg name="patSearchDelegate" ref="patSearchDelegate"/>
+    	<constructor-arg name="ncicCheckDelegate" ref="ncicCheckDelegate"/>
+    </bean>
+    
+    <!-- Delegates -->
+    
+    <bean id="bookingDelegate"
+    	class="omis.booking.service.delegate.BookingDelegate">
+    	<constructor-arg name="bookingInstanceFactory" ref="bookingInstanceFactory"/>
+    	<constructor-arg name="bookingDao" ref="bookingDao"/>
+    	<constructor-arg name="auditComponentRetriever" ref="auditComponentRetriever"/>    	
+    </bean>
+    
+    <bean id="bookingNoteDelegate"
+    	class="omis.booking.service.delegate.BookingNoteDelegate">
+    	<constructor-arg name="bookingNoteInstanceFactory" ref="bookingNoteInstanceFactory"/>
+    	<constructor-arg name="bookingNoteDao" ref="bookingNoteDao"/>
+    	<constructor-arg name="auditComponentRetriever" ref="auditComponentRetriever"/>
+    </bean>
+    
+    <bean id="bookingAdmissionCategoryDelegate"
+    	class="omis.booking.service.delegate.BookingAdmissionCategoryDelegate">
+    	<constructor-arg name="bookingAdmissionCategoryDao" ref="bookingAdmissionCategoryDao"/>
+    </bean>
+    
+    <bean id="bookingCommitSourceCategoryDelegate"
+    	class="omis.booking.service.delegate.BookingCommitSourceCategoryDelegate">
+    	<constructor-arg name="bookingCommitSourceCategoryDao" ref="bookingCommitSourceCategoryDao"/>
+    </bean>
+    
+    <!-- Instance factories -->
+    
+    <bean id="bookingInstanceFactory"
+    	class="omis.instance.factory.hibernate.impl.InstanceFactoryHibernateImpl">
+    	<constructor-arg name="instanceFactoryDelegate" ref="instanceFactoryDelegate"/>
+    	<constructor-arg name="entityName" value="omis.booking.domain.Booking"/>	
+    </bean>
+    
+    <bean id="bookingNoteInstanceFactory"
+    	class="omis.instance.factory.hibernate.impl.InstanceFactoryHibernateImpl">
+    	<constructor-arg name="instanceFactoryDelegate" ref="instanceFactoryDelegate"/>
+    	<constructor-arg name="entityName" value="omis.booking.domain.BookingNote"/>
+    </bean>
+        
+    <!-- Daos -->
+    
+	<bean id="bookingDao"
+		class="omis.booking.dao.impl.hibernate.BookingDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.booking.domain.Booking"/>
+	</bean>
+	
+	<bean id="bookingNoteDao"
+		class="omis.booking.dao.impl.hibernate.BookingNoteDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingNote"/>
+	</bean>
+	
+	<bean id="bookingAdmissionCategoryDao"
+		class="omis.booking.dao.impl.hibernate.BookingAdmissionCategoryDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingAdmissionCategory"/>
+	</bean>
+	
+	<bean id="bookingCommitSourceCategoryDao"
+		class="omis.booking.dao.impl.hibernate.BookingCommitSourceCategoryDaoHibernateImpl">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingCommitSourceCategory"/>
+	</bean>
+</beans>

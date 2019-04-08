@@ -60,6 +60,8 @@
   
   <import resource="applicationContext-boardHearingDecision.xml"/>
   
+  <import resource="applicationContext-booking.xml"/>
+  
   <import resource="applicationContext-caution.xml"/>
   
   <import resource="applicationContext-caseload.xml"/>
@@ -160,6 +162,8 @@
   
   <import resource="applicationContext-need.xml"/>
   
+  <import resource="applicationContext-ncicCheck.xml"/>
+  
   <import resource="applicationContext-offender.xml"/>
   
   <import resource="applicationContext-offenderContact.xml"/>
@@ -189,6 +193,8 @@
   <import resource="applicationContext-parolePlan.xml"/>
   
   <import resource="applicationContext-paroleReview.xml"/>
+  
+  <import resource="applicationContext-patSearch.xml"/>
   
   <import resource="applicationContext-person.xml"/>
   

@@ -24,6 +24,14 @@ import java.io.Serializable;
  * @version 0.1.0 (Apr 4, 2019)
  * @since OMIS 3.0 */ 
 public interface NcicCheckResult extends Serializable {
+	/** Gets id.
+	 * @return id. */
+	Long getId();
+	
+	/** Sets id.
+	 * @param id - id. */
+	void setId(Long id);
+	
 	/** Gets name.
 	 * @return name. */
 	String getName();

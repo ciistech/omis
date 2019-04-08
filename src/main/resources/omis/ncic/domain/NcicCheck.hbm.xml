@@ -14,7 +14,6 @@
 		<many-to-one name="offender" column="`OFFENDER_ID`" not-null="true" entity-name="omis.offender.domain.Offender"/>
 		<many-to-one name="booking" column="`BOOKING_ID`" not-null="false" entity-name="omis.booking.domain.Booking"/>
 		<property name="date" column="`DATE`" not-null="true"/>
-		<many-to-one name="officer" column="`OFFICER_STAFF_ID`" not-null="true" entity-name="omis.staff.domain.StaffAssignment"/>
 		<many-to-one name="result" column="`NCIC_CHECK_RESULT_ID`" not-null="true" entity-name="omis.ncic.domain.NcicCheckResult"/>
 		<component name="creationSignature">
 			<many-to-one name="userAccount" column="`CREATE_ACCOUNT_ID`"
