@@ -40,8 +40,12 @@ import omis.patsearch.domain.PatSearch;
 import omis.patsearch.exception.PatSearchExistsException;
 import omis.patsearch.service.delegate.PatSearchDelegate;
 import omis.region.domain.County;
+import omis.region.domain.State;
+import omis.region.service.delegate.CountyDelegate;
+import omis.region.service.delegate.StateDelegate;
 import omis.staff.domain.StaffAssignment;
 import omis.supervision.domain.CorrectionalStatus;
+import omis.supervision.service.delegate.CorrectionalStatusDelegate;
 
 /** Implementation of booking service.
  * @author Ryan Johns
@@ -56,6 +60,10 @@ public class BookingServiceImpl implements BookingService {
 		bookingAdmissionCategoryDelegate;
 	private final BookingCommitSourceCategoryDelegate
 		bookingCommitSourceCategoryDelegate;
+	private final CorrectionalStatusDelegate 
+		correctionalStatusDelegate;
+	private final StateDelegate stateDelegate;
+	private final CountyDelegate countyDelegate;
 	
 	/** Constructor.
 	 * @param bookingDelegate - booking delegate.
@@ -65,7 +73,10 @@ public class BookingServiceImpl implements BookingService {
 	 * @param bookingAdmissionCategoryDelegate - 
 	 * booking admission category delegate. 
 	 * @param bookingCommitSourceCategoryDelegate -
-	 * booking commit source category delegate. */
+	 * booking commit source category delegate. 
+	 * @param correctionalStatusDelegate - correctional status delegate. 
+	 * @param stateDelegate - state delegate.
+	 * @param countyDelegate - county delegate. */
 	public BookingServiceImpl(final BookingDelegate bookingDelegate,
 			final BookingNoteDelegate bookingNoteDelegate,
 			final PatSearchDelegate patSearchDelegate,
@@ -73,7 +84,10 @@ public class BookingServiceImpl implements BookingService {
 			final BookingAdmissionCategoryDelegate 
 				bookingAdmissionCategoryDelegate,
 			final BookingCommitSourceCategoryDelegate
-				bookingCommitSourceCategoryDelegate) {
+				bookingCommitSourceCategoryDelegate, 
+			final CorrectionalStatusDelegate correctionalStatusDelegate,
+			final StateDelegate stateDelegate, 
+			final CountyDelegate countyDelegate) {
 		this.bookingDelegate = bookingDelegate;
 		this.bookingNoteDelegate = bookingNoteDelegate;
 		this.patSearchDelegate = patSearchDelegate;
@@ -82,6 +96,9 @@ public class BookingServiceImpl implements BookingService {
 			= bookingAdmissionCategoryDelegate;
 		this.bookingCommitSourceCategoryDelegate 
 			= bookingCommitSourceCategoryDelegate;
+		this.correctionalStatusDelegate = correctionalStatusDelegate;
+		this.stateDelegate = stateDelegate;
+		this.countyDelegate = countyDelegate;
 	}
 	
 	
@@ -216,5 +233,22 @@ public class BookingServiceImpl implements BookingService {
 	public List<NcicCheck> findNcicChecksByBooking(Booking booking) {
 		return this.ncicCheckDelegate.findByBooking(booking);
 	}
-
+	
+	/** {@inheritDoc} */
+	@Override
+	public List<CorrectionalStatus> findCorrectionalStatuses() {
+		return this.correctionalStatusDelegate.findAllCorrectionalStatuses();
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public State findHomeState() {
+		return this.stateDelegate.findHomeState();
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public List<County> findAllCountiesByState(final State state) {
+		return this.countyDelegate.findByState(state);
+	}
 }

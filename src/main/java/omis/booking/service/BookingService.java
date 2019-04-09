@@ -33,6 +33,7 @@ import omis.offender.domain.Offender;
 import omis.patsearch.domain.PatSearch;
 import omis.patsearch.exception.PatSearchExistsException;
 import omis.region.domain.County;
+import omis.region.domain.State;
 import omis.staff.domain.StaffAssignment;
 import omis.supervision.domain.CorrectionalStatus;
 
@@ -172,4 +173,17 @@ public interface BookingService {
 	 * @param booking - booking.
 	 * @return ncic checks. */
 	List<NcicCheck> findNcicChecksByBooking(Booking booking);
+	
+	/** Find correctional statuses.
+	 * @return correctional statuses. */
+	List<CorrectionalStatus> findCorrectionalStatuses();
+	
+	/** Find home state.
+	 * @return home state. */
+	State findHomeState();
+	
+	/** Finds counties.
+	 * @param state - state.
+	 * @return counties. */
+	List<County> findAllCountiesByState(State state);
 }

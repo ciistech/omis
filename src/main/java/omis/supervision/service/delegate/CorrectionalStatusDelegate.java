@@ -17,6 +17,8 @@
  */
 package omis.supervision.service.delegate;
 
+import java.util.List;
+
 import omis.instance.factory.InstanceFactory;
 import omis.supervision.dao.CorrectionalStatusDao;
 import omis.supervision.domain.CorrectionalStatus;
@@ -101,6 +103,12 @@ public class CorrectionalStatusDelegate {
 				name, abbreviation, locationRequired, sortOrder, valid);
 	}
 	
+	/** Finds all correctional statuses.
+	 * @return correctional status. */
+	public List<CorrectionalStatus> findAllCorrectionalStatuses() {
+		return this.correctionalStatusDao.findAll();
+	}
+	
 	// Implementation to create correctional status
 	private CorrectionalStatus createImpl(final String name,
 			final String abbreviation, final Boolean locationRequired,
@@ -115,4 +123,5 @@ public class CorrectionalStatusDelegate {
 		correctionalStatus.setValid(valid);
 		return this.correctionalStatusDao.makePersistent(correctionalStatus);
 	}
+	
 }

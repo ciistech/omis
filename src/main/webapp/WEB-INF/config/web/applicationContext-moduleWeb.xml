@@ -67,6 +67,8 @@
   
   <import resource="applicationContext-boardHearingDecisionWeb.xml"/>
   
+  <import resource="applicationContext-bookingWeb.xml"/>
+  
   <import resource="applicationContext-boppWeb.xml"/>
   
   <import resource="applicationContext-cautionWeb.xml"/>

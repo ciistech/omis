@@ -26,7 +26,8 @@ import omis.supervision.domain.CorrectionalStatus;
  * Data access object for correctional statuses.
  * 
  * @author Stephen Abson
- * @version 0.1.0 (Oct 9, 2013)
+ * @author Ryan Johns
+ * @version 0.1.1 (Apr 8, 2019)
  * @since OMIS 3.0
  */
 public interface CorrectionalStatusDao
@@ -49,4 +50,8 @@ public interface CorrectionalStatusDao
 	 */
 	List<CorrectionalStatus> findAllowedCorrectionalStatuses(
 			CorrectionalStatus fromCorrectionalStatus);
+	
+	/** Returns correctional statuses.
+	 * @return correctional statuses. */
+	List<CorrectionalStatus> findAll();
 }

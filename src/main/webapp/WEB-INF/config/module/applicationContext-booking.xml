@@ -18,6 +18,9 @@
     	<constructor-arg name="bookingCommitSourceCategoryDelegate" ref="bookingCommitSourceCategoryDelegate"/>
     	<constructor-arg name="patSearchDelegate" ref="patSearchDelegate"/>
     	<constructor-arg name="ncicCheckDelegate" ref="ncicCheckDelegate"/>
+    	<constructor-arg name="correctionalStatusDelegate" ref="correctionalStatusDelegate"/>
+    	<constructor-arg name="stateDelegate" ref="stateDelegate"/>
+    	<constructor-arg name="countyDelegate" ref="countyDelegate"/>
     </bean>
     
     <!-- Delegates -->
