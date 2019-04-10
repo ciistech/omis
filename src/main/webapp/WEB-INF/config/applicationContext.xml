@@ -105,6 +105,7 @@
     			<value>/WEB-INF/classes/omis/boardconsideration/msgs/form</value>
     			<value>/WEB-INF/classes/omis/boardhearing/msgs/form</value>
     			<value>/WEB-INF/classes/omis/boardhearingdecision/msgs/form</value>
+    			<value>/WEB-INF/classes/omis/booking/msgs/form</value>
     			<value>/WEB-INF/classes/omis/caseload/msgs/form</value>
     			<value>/WEB-INF/classes/omis/caution/msgs/form</value>
     			<value>/WEB-INF/classes/omis/chronologicalnote/msgs/form</value>

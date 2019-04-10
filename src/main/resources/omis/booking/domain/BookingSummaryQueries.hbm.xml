@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="omis.booking.report">
+	<query name="findBookingSummariesByOffender"><![CDATA[
+		 select new omis.booking.report.BookingSummary(booking.id, booking.date, county.name, booking.bookingNumber)
+ 		   from omis.booking.domain.Booking booking
+left outer join booking.county county
+          where booking.offender = :offender
+	]]></query>
+</hibernate-mapping>

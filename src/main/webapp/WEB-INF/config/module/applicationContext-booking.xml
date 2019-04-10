@@ -23,6 +23,11 @@
     	<constructor-arg name="countyDelegate" ref="countyDelegate"/>
     </bean>
     
+    <bean id="bookingSummaryReportService"
+    	class="omis.booking.report.impl.hibernate.BookingSummaryReportServiceHibernateImpl">
+    	<constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
     <!-- Delegates -->
     
     <bean id="bookingDelegate"
@@ -87,5 +92,27 @@
 		class="omis.booking.dao.impl.hibernate.BookingCommitSourceCategoryDaoHibernateImpl">
 		<constructor-arg name="sessionFactory" ref="sessionFactory"/>
 		<constructor-arg name="entityName" value="omis.booking.domain.BookingCommitSourceCategory"/>
+	</bean>
+	
+	<!-- Property editor factories -->
+	<bean id="bookingPropertyEditorFactory"
+		class="omis.beans.factory.impl.hibernate.PropertyEditorFactoryHibernateImpl">
+		<constructor-arg name="entityName" value="omis.booking.domain.Booking"/>
+		<constructor-arg name="configuration" ref="hibernateConfiguration"/>
+		<constructor-arg name="dao" ref="bookingDao"/>
+	</bean>
+	
+	<bean id="bookingCommitSourceCategoryPropertyEditorFactory"
+		class="omis.beans.factory.impl.hibernate.PropertyEditorFactoryHibernateImpl">
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingCommitSourceCategory"/>
+		<constructor-arg name="configuration" ref="hibernateConfiguration"/>
+		<constructor-arg name="dao" ref="bookingCommitSourceCategoryDao"/>
+	</bean>
+	
+	<bean id="bookingAdmissionCategoryPropertyEditorFactory"
+		class="omis.beans.factory.impl.hibernate.PropertyEditorFactoryHibernateImpl">
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingAdmissionCategory"/>
+		<constructor-arg name="configuration" ref="hibernateConfiguration"/>
+		<constructor-arg name="dao" ref="bookingAdmissionCategoryDao"/>
 	</bean>
 </beans>

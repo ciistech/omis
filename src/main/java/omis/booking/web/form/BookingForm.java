@@ -100,7 +100,7 @@ public class BookingForm {
 	
 	/** Sets commit source.
 	 * @param commitSource - booking commit source category. */
-	public void setBookingCommitSourceCategory(
+	public void setCommitSource(
 			final BookingCommitSourceCategory commitSource) {
 		this.commitSource = commitSource;
 	}

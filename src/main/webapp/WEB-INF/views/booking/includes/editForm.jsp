@@ -1,8 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<fmt:setBundle basename="omis.msgs.common" var="commonBundle"/>
 <fmt:bundle basename="omis.booking.msgs.booking">
-<form:form commandName="form" class="editForm">
+<form:form commandName="bookingForm" class="editForm">
 	<fieldset>
 		<legend><fmt:message key="detailsLabel"/></legend>
 		
@@ -55,7 +56,7 @@
 			</form:select>
 			<form:errors cssClass="error" path="commitSource"/>
 		</span>
-		<c:set var="staffName" value="${not empty form.transportOfficer ? 'form.transportOfficer.staffMember.name.lastName form.transportOfficer.staffMember.name.lastName' : ''}"/>
+		<c:set var="staffName" value="${not empty bookingForm.transportOfficer ? 'bookingForm.transportOfficer.staffMember.name.lastName bookingForm.transportOfficer.staffMember.name.lastName' : ''}"/>
 		<span class="fieldGroup">
 			<form:label class="fieldLabel" path="transportOfficer"><fmt:message key="transportOfficerLabel"/></form:label>
 			<input id="transportOfficerInput" value="${staffName}"/>
@@ -65,5 +66,23 @@
 		</span>
 		<form:errors path="transportOfficer" cssClass="error"/>
 	</fieldset>
+	<fieldset>
+		<legend>
+			<a class="createLink" 
+    	  		  id="bookingNoteItemsActionMenuLink" 
+				href="${pageContext.request.contextPath}/booking/addBookingNote.html?bookingNoteItemIndex=${bookingNoteItemIndex}"></a>
+			<fmt:message key="bookingNoteLabel"/>
+		</legend>
+		<jsp:include page="bookingNoteTable.jsp"/>
+	</fieldset>
+	<c:if test="${not empty booking}">
+		<c:set var="updatable" value="${booking}" scope="request"/>
+		<jsp:include page="/WEB-INF/views/audit/includes/updateSignature.jsp"/>
+	</c:if>
+	<p class="buttons">
+		<fmt:message var ="saveLabel" key="saveLabel" bundle="${commonBundle}"/>
+		<input type="submit" value="${saveLabel}"/>
+	</p>
+	
 </form:form>	
 </fmt:bundle>

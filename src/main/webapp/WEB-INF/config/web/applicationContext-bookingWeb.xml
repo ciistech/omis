@@ -10,6 +10,14 @@
         http://www.springframework.org/schema/context/spring-context-3.1.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+	<!-- Validators -->
+	<bean id="bookingValidator" class="omis.booking.web.validator.BookingFormValidator">
+	</bean>
 
 	<context:component-scan base-package="omis.booking.web.controller"/>
+	
+	<aop:config>
+		<aop:pointcut id="bookingControllerOperation" expression="execution(* omis.booking.web.controller.BookingController.*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="bookingControllerOperation"/>
+	</aop:config>
 </beans>
