@@ -181,11 +181,18 @@
   </beans:beans>
   
   <!-- Authentication manager for JDBC authentication and authorization. -->
-    
+   
   <beans:beans profile="dev">
+	<beans:bean id="datasourceProperties"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  		<beans:property name="location" value="classpath:hibernate.properties"/>
+	</beans:bean>
+	<beans:bean id="securitySource" class="org.springframework.jndi.JndiObjectFactoryBean">
+  	<beans:property name="jndiName" value="${hibernate.connection.datasource}"/>
+	</beans:bean>
     <authentication-manager>
       <authentication-provider>
-        <jdbc-user-service data-source-ref="dataSource"
+        <jdbc-user-service data-source-ref="securitySource"
                            users-by-username-query='select "USERNAME", "PASSWORD", "ENABLED" from "USER_ACCOUNT" where "USERNAME" = ?'
                            authorities-by-username-query='select ua."USERNAME", ur."NAME"
                                                           from "USER_ACCOUNT" ua
@@ -205,7 +212,7 @@
   
   <!-- Hosted LDAP server -->
   
-  <beans:beans profile="test,preprod,prod">
+  <beans:beans profile="preprod,prod">
     <ldap-server url="${ldap.server.url}"
                  manager-dn="#{systemProperties['omis.auth.manager-dn']}"
                  manager-password="#{systemProperties['omis.auth.manager-password']}"/>
