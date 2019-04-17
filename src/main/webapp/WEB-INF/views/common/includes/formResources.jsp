@@ -22,5 +22,5 @@
 	<jsp:include page="/WEB-INF/views/common/includes/messageResolverResources.jsp"/>
 	<c:if test="${empty formResources}">
 		<c:set var="formResources" value="true" scope="request"/>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/common/scripts/form.js?VERSION=2"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/common/scripts/form.js?VERSION=3"></script>
 	</c:if>

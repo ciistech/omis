@@ -17,7 +17,9 @@
  */
 package omis.booking.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,9 +39,13 @@ import omis.beans.factory.spring.CustomDateEditorFactory;
 import omis.booking.domain.Booking;
 import omis.booking.domain.BookingAdmissionCategory;
 import omis.booking.domain.BookingCommitSourceCategory;
+import omis.booking.domain.BookingNote;
 import omis.booking.exception.BookingExistsException;
+import omis.booking.exception.BookingNoteExistsException;
 import omis.booking.service.BookingService;
 import omis.booking.web.form.BookingForm;
+import omis.booking.web.form.BookingNoteFormItem;
+import omis.booking.web.form.BookingNoteItemOperation;
 import omis.booking.web.validator.BookingFormValidator;
 import omis.content.RequestContentMapping;
 import omis.content.RequestContentType;
@@ -63,6 +69,8 @@ public class BookingController {
 	private static final String EDIT_VIEW_NAME = "booking/edit";
 	private static final String ACTION_MENU_VIEW_NAME 
 		= "booking/includes/bookingActionMenu";
+	private static final String BOOKING_NOTE_ITEM_VIEW_NAME 
+		= "booking/includes/bookingNoteItemTableRow";
 	
 	/* Redirects. */
 	private static final String LIST_REDIRECT_VIEW_NAME 
@@ -77,6 +85,13 @@ public class BookingController {
 	private static final String CORRECTIONAL_STATUSES_MODEL_KEY 
 		= "correctionalStatuses";
 	private static final String COUNTIES_MODEL_KEY = "counties";
+	private static final String BOOKING_NOTE_ITEM_INDEX_MODEL_KEY 
+		= "bookingNoteItemIndex";
+	private static final String CURRENT_BOOKING_NOTE_INDEX_MODEL_KEY 
+		= "currentNoteIndex";
+	private static final String BOOKING_NOTE_ITEM_MODEL_KEY 
+		= "bookingNoteItem";
+	private static final String BOOKING_MODEL_KEY = "booking";
 	
 	/* Property editors. */
 	
@@ -102,6 +117,13 @@ public class BookingController {
 	
 	@Autowired
 	private PropertyEditorFactory countyPropertyEditorFactory;
+	
+	@Autowired
+	private PropertyEditorFactory bookingNotePropertyEditorFactory;
+	
+	@Autowired
+	@Qualifier("bookingPropertyEditorFactory")
+	private PropertyEditorFactory bookingPropertyEditorFactory;
 	
 	/* Services. */
 	@Autowired
@@ -134,6 +156,7 @@ public class BookingController {
 		
 		this.offenderSummaryModelDelegate.add(map, offender);
 		map.put(FORM_MODEL_KEY, form);
+		map.put(CURRENT_BOOKING_NOTE_INDEX_MODEL_KEY, 0);
 		
 		mav = new ModelAndView(EDIT_VIEW_NAME, map);
 		return mav;
@@ -144,7 +167,9 @@ public class BookingController {
 	 * @param bookingForm - booking form.
 	 * @param result - binding result.
 	 * @return list redirect. 
-	 * @throws BookingExistsException - when booking record already exists.*/
+	 * @throws BookingExistsException - when booking record already exists.
+	 * @throws BookingNoteExistsException - when booking note already 
+	 * exists. */
 	@RequestContentMapping(nameKey= "bookingSaveScreen",
 			descriptionKey = "bookingSaveScreenDescription",
 			messageBundle = "omis.booking.msgs.booking",
@@ -154,8 +179,8 @@ public class BookingController {
 	public ModelAndView saveBooking(final BookingForm form,
 			@RequestParam(value = "offender", required = true)
 				final Offender offender,  
-				final BindingResult result) throws BookingExistsException {
-		System.out.println("starting save");
+				final BindingResult result) throws BookingExistsException, 
+	BookingNoteExistsException {
 		final ModelAndView mav;
 		this.bookingFormValidator.validate(form, result);
 		if (result.hasErrors()) {
@@ -163,20 +188,89 @@ public class BookingController {
 			this.prepareMap(map);
 			map.put(FORM_MODEL_KEY,  form);
 			map.put(BindingResult.MODEL_KEY_PREFIX + FORM_MODEL_KEY,  result);
+			map.put(CURRENT_BOOKING_NOTE_INDEX_MODEL_KEY, 
+					form.getBookingNoteItems().size());
 			mav = new ModelAndView(EDIT_VIEW_NAME, map);
-			System.out.println("Errored booking");
 		} else {
 			Booking booking = this.bookingService.createBooking(
 					form.getBookingNumber(), form.getCategory(), offender, 
 					form.getDate(), form.getCounty(), 
 					form.getCorrectionalStatus(), form.getCommitSource(),
 					form.getTransportOfficer());
+			
+			this.processBookingNotes(booking, form.getBookingNoteItems());
 			mav = this.prepareListRedirect(booking.getOffender());
-			System.out.println("saved booking");
 		}
 		return mav;
 	}
 	
+	/** Edits booking record.
+	 * @param booking - booking.
+	 * @return booking edit form. */
+	@RequestContentMapping(nameKey = "bookingEditScreen",
+			descriptionKey = "bookingEditScreenDescription",
+			messageBundle = "omis.booking.msgs.booking",
+			screenType = RequestContentType.AJAX_REQUEST)
+	@RequestMapping(value = "/edit.html", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('BOOKING_EDIT') or hasRole('ADMIN')")
+	public ModelAndView editBooking(
+			@RequestParam(value = "booking", required = true)
+			final Booking booking) {
+		final ModelAndView mav;
+		final ModelMap map = new ModelMap();
+		this.prepareMap(map);
+		this.offenderSummaryModelDelegate.add(map, booking.getOffender());
+		BookingForm form = this.prepareForm(booking);
+		form.setBookingNoteItems(this.prepareBookingNotes(this.bookingService
+				.findBookingNotesByBooking(booking)));
+		map.put(FORM_MODEL_KEY, form);
+		map.put(BOOKING_MODEL_KEY, booking);
+		map.put(CURRENT_BOOKING_NOTE_INDEX_MODEL_KEY, 
+				form.getBookingNoteItems().size());
+		mav = new ModelAndView(EDIT_VIEW_NAME, map);
+		return mav;
+	}
+	
+	/** Update booking record.
+	 * @param form - booking form.
+	 * @param booking - booking.
+	 * @return redirect to listing. 
+	 * @throws BookingExistsException - when booking record exists. 
+	 * @throws BookingNoteExistsException - when booking note exists. */
+	@RequestContentMapping(nameKey = "bookingUpdateScreen",
+			descriptionKey = "bookingUpdateScreenDescription",
+			messageBundle = "omis.booking.msgs.booking",
+			screenType = RequestContentType.LISTING_SCREEN)
+	@RequestMapping(value="/edit.html", method=RequestMethod.POST)
+	@PreAuthorize("hasRole('BOOKING_UPDATE') or hasRole('ADMIN')")
+	public ModelAndView updateBooking(
+			final BookingForm form, 
+			@RequestParam(value = "booking", required = true)
+			final Booking booking,
+			final BindingResult result) throws BookingExistsException, 
+		BookingNoteExistsException {
+		final ModelAndView mav;
+		this.bookingFormValidator.validate(form, result);
+		if (result.hasErrors()) {
+			final ModelMap map = new ModelMap();
+			this.prepareMap(map);
+			map.put(FORM_MODEL_KEY,  form);
+			map.put(BindingResult.MODEL_KEY_PREFIX + FORM_MODEL_KEY,  result);
+			map.put(CURRENT_BOOKING_NOTE_INDEX_MODEL_KEY, 
+					form.getBookingNoteItems().size());
+			mav = new ModelAndView(EDIT_VIEW_NAME, map);
+		} else {
+			this.bookingService.updateBooking(booking, 
+					form.getBookingNumber(), form.getCategory(), 
+					form.getDate(), form.getCounty(), 
+					form.getCorrectionalStatus(), form.getCommitSource(), 
+					form.getTransportOfficer());
+			
+			this.processBookingNotes(booking, form.getBookingNoteItems());
+			mav = this.prepareListRedirect(booking.getOffender());
+		}
+		return mav;
+	}
 	/** Action menu for booking record.
 	 * @param offender - offender.
 	 * @return action menu model and view. */
@@ -184,17 +278,60 @@ public class BookingController {
 			descriptionKey = "bookingActionMenuScreenDescription",
 			messageBundle = "omis.booking.msgs.booking",
 			screenType = RequestContentType.AJAX_REQUEST)
-	@RequestMapping(value="bookingActionMenu.html", method = RequestMethod.GET)
+	@RequestMapping(value="/bookingActionMenu.html", method = RequestMethod.GET)
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ModelAndView bookingActionMenu(@RequestParam(value = "offender") final Offender offender) {
+	public ModelAndView bookingActionMenu(
+			@RequestParam(value = "offender", required=true) 
+			final Offender offender) {
 		ModelAndView mav;
 		ModelMap map = new ModelMap();
 		map.put(OFFENDER_MODEL_KEY, offender);
 		
-		mav = new ModelAndView(ACTION_MENU_VIEW_NAME);
+		mav = new ModelAndView(ACTION_MENU_VIEW_NAME, map);
 		return mav;
 	}
 	
+	/** Booking note.
+	 * @param bookingNoteIndex - booking note index.
+	 * @return booking note row item model and view. */
+	@RequestContentMapping(nameKey = "bookingNoteAddNoteScreen",
+			descriptionKey = "bookingNoteAddNoteScreenDescription",
+			messageBundle = "omis.booking.msgs.booking",
+			screenType = RequestContentType.AJAX_REQUEST)
+	@RequestMapping(value="/addBookingNote.html", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ModelAndView bookingNoteAddNote(
+			@RequestParam(value = "bookingNoteIndex", required = true)
+			final int bookingNoteIndex) {
+		final ModelAndView mav;
+		final ModelMap map = new ModelMap();
+		final BookingNoteFormItem formItem = new BookingNoteFormItem();
+		formItem.setItemOperation(BookingNoteItemOperation.CREATE);
+		map.put(BOOKING_NOTE_ITEM_MODEL_KEY, formItem);
+		map.put(BOOKING_NOTE_ITEM_INDEX_MODEL_KEY, bookingNoteIndex);
+		mav = new ModelAndView(BOOKING_NOTE_ITEM_VIEW_NAME, map);
+		return mav;	
+	}
+	
+	/** Remove booking.
+	 * @param booking - booking.
+	 * @return listing booking list redirect. */
+	@RequestContentMapping(nameKey = "removeBookingScreen",
+			descriptionKey = "removeBookingScreenDescription",
+			messageBundle = "omis.booking.msgs.booking",
+			screenType = RequestContentType.OTHER)
+	@RequestMapping(value="/remove.html", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('BOOKING_REMOVE') or hasRole('ADMIN')")
+	public ModelAndView remove(
+			@RequestParam(value ="booking", required=true)
+				final Booking booking) {
+		final ModelAndView mav;
+		this.bookingService.removeBooking(booking);
+		
+		mav = this.prepareListRedirect(booking.getOffender());
+		return mav;
+	}
+
 	/* Private prepare map. */
 	private  void prepareMap(final ModelMap map) {
 		map.put(COMMIT_SOURCES_MODEL_KEY, this.bookingService
@@ -211,10 +348,66 @@ public class BookingController {
 	}
 	
 	/* Prepres list redirect. */
-	public ModelAndView prepareListRedirect(final Offender offender) {
+	private ModelAndView prepareListRedirect(final Offender offender) {
 		return new ModelAndView(String.format(LIST_REDIRECT_VIEW_NAME, 
 				offender.getId()));
 	}
+
+	/* Process booking notes. */
+	private void processBookingNotes(final Booking booking, 
+			final List<BookingNoteFormItem> items) 
+					throws BookingNoteExistsException {
+		if (items != null) {
+			for (BookingNoteFormItem item: items) {
+				if (BookingNoteItemOperation.REMOVE.equals(
+						item.getItemOperation())) {
+					this.bookingService.removeBookingNote(item.getBookingNote());
+				} else if (BookingNoteItemOperation.CREATE.equals(
+						item.getItemOperation())) {
+					this.bookingService.createBookingNote(booking, 
+							item.getDescription(), item.getDate());
+				} else if (BookingNoteItemOperation.UPDATE.equals(
+						item.getItemOperation())) {
+					this.bookingService.updateBookingNote(item.getBookingNote(), 
+							item.getDescription(), item.getDate());
+				} else {
+					/* No Changes do nothing. */
+				}
+			}
+		}
+	}
+	
+	/* Prepares form. */
+	BookingForm prepareForm(final Booking booking) {
+		final BookingForm form = new BookingForm();
+		form.setBookingNumber(booking.getBookingNumber());
+		form.setCategory(booking.getCategory());
+		form.setCommitSource(booking.getCommitSource());
+		form.setCorrectionalStatus(booking.getCorrectionalStatus());
+		form.setCounty(booking.getCounty());
+		form.setDate(booking.getDate());
+		form.setOffender(booking.getOffender());
+		form.setTransportOfficer(booking.getTransportOfficer());
+		return form;
+	}
+	
+	/* Prepare booking note items. */
+	List<BookingNoteFormItem> prepareBookingNotes(final List<BookingNote> notes) {
+		List<BookingNoteFormItem> noteItems = null;
+		if (notes != null) {
+			noteItems = new ArrayList<BookingNoteFormItem>();
+			for (BookingNote note : notes) {
+				BookingNoteFormItem formItem = new BookingNoteFormItem();
+				formItem.setBookingNote(note);
+				formItem.setDate(note.getDate());
+				formItem.setDescription(note.getDescription());
+				noteItems.add(formItem);
+			}
+		}
+		return noteItems;
+		
+	}
+	
 	
 	/* Register property editors. */
 	@InitBinder
@@ -227,7 +420,9 @@ public class BookingController {
 				this.bookingCommitSourceCategoryPropertyEditorFactory
 				.createPropertyEditor());
 		
-		binder.registerCustomEditor(Date.class, this.customDateEditorFactory.createCustomDateOnlyEditor(false));
+		binder.registerCustomEditor(Date.class, 
+				this.customDateEditorFactory.createCustomDateOnlyEditor(
+						true));
 		
 		binder.registerCustomEditor(CorrectionalStatus.class, 
 				this.correctionalStatusPropertyEditorFactory.createPropertyEditor());
@@ -241,5 +436,11 @@ public class BookingController {
 		
 		binder.registerCustomEditor(County.class, 
 				this.countyPropertyEditorFactory.createPropertyEditor());
+		
+		binder.registerCustomEditor(Booking.class, 
+				this.bookingPropertyEditorFactory.createPropertyEditor());
+		
+		binder.registerCustomEditor(BookingNote.class, 
+				this.bookingNotePropertyEditorFactory.createPropertyEditor());
 	}
 }

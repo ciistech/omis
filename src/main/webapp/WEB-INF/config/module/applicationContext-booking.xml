@@ -115,4 +115,11 @@
 		<constructor-arg name="configuration" ref="hibernateConfiguration"/>
 		<constructor-arg name="dao" ref="bookingAdmissionCategoryDao"/>
 	</bean>
+	
+	<bean id="bookingNotePropertyEditorFactory"
+		class="omis.beans.factory.impl.hibernate.PropertyEditorFactoryHibernateImpl">
+		<constructor-arg name="entityName" value="omis.booking.domain.BookingNote"/>
+		<constructor-arg name="configuration" ref="hibernateConfiguration"/>
+		<constructor-arg name="dao" ref="bookingNoteDao"/>
+	</bean>
 </beans>

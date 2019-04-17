@@ -157,6 +157,11 @@ public interface BookingService {
 	 * @return pat searches. */
 	List<PatSearch> findPatSearchByBooking(Booking booking);
 	
+	/** Finds booking notes by booking.
+	 * @param booking - booking.
+	 * @return booking notes. */
+	List<BookingNote> findBookingNotesByBooking(Booking booking);
+	
 	/** Finds booking admission categories.
 	 * @return booking admission categories. */
 	List<BookingAdmissionCategory> findBookingAdmissionCategories();

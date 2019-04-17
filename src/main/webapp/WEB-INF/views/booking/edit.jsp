@@ -37,12 +37,14 @@
 </title>
 <jsp:include page="/WEB-INF/views/common/includes/headerOffenderFormResources.jsp"/>
 <jsp:include page="/WEB-INF/views/common/includes/searchResources.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/booking/scripts/JQuery/jquery.omis.booking.js?VERSION=1"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/booking/scripts/booking.js?VERSION=1"></script>
+<script type="text/javascript">var currentBookingNoteIndex = ${currentNoteIndex};</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/offender/includes/offenderHeader.jsp"/>
 	<h1>
-		<a class="actionMenuItem" id="actionMenuLink" href="${pageContext.request.contextPath}/booking/bookingActionMenu.html?offender=${offender.id}"></a>
+		<a class="actionMenuItem" id="actionMenuLink" href="${pageContext.request.contextPath}/booking/bookingActionMenu.html?offender=${offenderSummary.id}"></a>
 		<c:choose>
 			<c:when test="${not empty booking}"><fmt:message key="editBookingHeader"/></c:when>
 			<c:otherwise><fmt:message key="createBookingHeader"/></c:otherwise>

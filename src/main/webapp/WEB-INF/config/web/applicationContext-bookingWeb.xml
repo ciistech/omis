@@ -11,7 +11,10 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	<!-- Validators -->
+	<bean id="bookingNoteValidator" class="omis.booking.web.validator.BookingNoteFormItemValidator"/>
+
 	<bean id="bookingValidator" class="omis.booking.web.validator.BookingFormValidator">
+		<constructor-arg name="bookingNoteValidator" ref="bookingNoteValidator"/>
 	</bean>
 
 	<context:component-scan base-package="omis.booking.web.controller"/>

@@ -18,6 +18,7 @@
 package omis.booking.web.form;
 
 import java.util.Date;
+import java.util.List;
 
 import omis.booking.domain.BookingAdmissionCategory;
 import omis.booking.domain.BookingCommitSourceCategory;
@@ -39,6 +40,7 @@ public class BookingForm {
 	private StaffAssignment transportOfficer;
 	private CorrectionalStatus correctionalStatus;
 	private County county;
+	private List<BookingNoteFormItem> bookingNoteItems;
 	
 	/** Constructor. */
 	public BookingForm() { }
@@ -141,5 +143,18 @@ public class BookingForm {
 	 * @param county - county. */
 	public void setCounty(final County county) {
 		this.county = county;
+	}
+	
+	/** Sets booking note form items.
+	 * @param bookingNotes - booking note form items. */
+	public void setBookingNoteItems(
+			final List<BookingNoteFormItem> bookingNotesItems) {
+		this.bookingNoteItems = bookingNotesItems;
+	}
+	
+	/** Gets booking note form items.
+	 * @return booking note form items. */
+	public List<BookingNoteFormItem> getBookingNoteItems() {
+		return this.bookingNoteItems;
 	}
 }

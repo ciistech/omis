@@ -148,7 +148,18 @@ function isFormUpdated(form) {
 function applyDatePicker(elt, options) {
 	$(elt).datepicker($.extend({
 		changeMonth: true,
-		changeYear: true
+		changeYear: true,
+		onSelect: function() {
+	         var event;
+	         if(typeof window.Event == "function"){
+	             event = new Event('change');
+	             this.dispatchEvent(event);
+	         }   else {
+	             event = document.createEvent('HTMLEvents');
+	             event.initEvent('change', false, false);
+	             this.dispatchEvent(event);
+	         }
+	     }
 	},options));
 	$(elt).attr("autocomplete", "off");
 }

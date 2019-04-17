@@ -56,10 +56,18 @@
 			</form:select>
 			<form:errors cssClass="error" path="commitSource"/>
 		</span>
-		<c:set var="staffName" value="${not empty bookingForm.transportOfficer ? 'bookingForm.transportOfficer.staffMember.name.lastName bookingForm.transportOfficer.staffMember.name.lastName' : ''}"/>
 		<span class="fieldGroup">
+			<c:choose>
+				<c:when test="${not empty booking.transportOfficer}">
+					<c:set var="staffName" value="${booking.transportOfficer.staffMember.name.lastName}, ${booking.transportOfficer.staffMember.name.firstName} (${booking.transportOfficer.title.name})"/>
+				</c:when>
+				<c:otherwise>
+					<c:set var="staffName" value = ""/>
+				</c:otherwise>
+			</c:choose>
+		
 			<form:label class="fieldLabel" path="transportOfficer"><fmt:message key="transportOfficerLabel"/></form:label>
-			<input id="transportOfficerInput" value="${staffName}"/>
+			<input id="transportOfficerInput" value="${staffName }"/>
 			<form:input path="transportOfficer" type="hidden"/>
 			<a id="currentStaffAssignmentLink" class="currentUserAccountLink"></a>
 			<a id="clearStaffAssignmentLink" class="clearLink"></a>
@@ -69,8 +77,8 @@
 	<fieldset>
 		<legend>
 			<a class="createLink" 
-    	  		  id="bookingNoteItemsActionMenuLink" 
-				href="${pageContext.request.contextPath}/booking/addBookingNote.html?bookingNoteItemIndex=${bookingNoteItemIndex}"></a>
+    	  		  id="bookingNoteItemsLink" 
+				href="${pageContext.request.contextPath}/booking/addBookingNote.html"></a>
 			<fmt:message key="bookingNoteLabel"/>
 		</legend>
 		<jsp:include page="bookingNoteTable.jsp"/>

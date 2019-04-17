@@ -212,6 +212,12 @@ public class BookingServiceImpl implements BookingService {
 
 	/** {@inheritDoc} */
 	@Override
+	public List<BookingNote> findBookingNotesByBooking(final Booking booking) {
+		return this.bookingNoteDelegate.findByBooking(booking);
+	}
+	
+	/** {@inheritDoc} */
+	@Override
 	public List<BookingAdmissionCategory> findBookingAdmissionCategories() {
 		return this.bookingAdmissionCategoryDelegate.findAll();
 	}

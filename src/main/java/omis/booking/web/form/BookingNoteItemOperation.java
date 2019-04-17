@@ -29,7 +29,7 @@ public enum BookingNoteItemOperation {
 	UPDATE,
 	
 	/** Remove. */
-	Remove;
+	REMOVE;
 	
 	/** Gets name.
 	 * @return name. */

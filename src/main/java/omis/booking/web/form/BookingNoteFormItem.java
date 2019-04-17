@@ -19,14 +19,29 @@ package omis.booking.web.form;
 
 import java.util.Date;
 
+import omis.booking.domain.BookingNote;
+
 /** Form for booking note.
  * @author Ryan Johns
  * @version 0.1.0 (Apr 9, 2019)
  * @since OMIS 3.0 */
 public class BookingNoteFormItem {
+	private BookingNote bookingNote;
 	private BookingNoteItemOperation itemOperation;
 	private String description;
 	private Date date;
+	
+	/** Gets booking note.
+	 * @return booking note. */
+	public BookingNote getBookingNote() {
+		return this.bookingNote;
+	}
+	
+	/** Sets booking note.
+	 * @param bookingNote - booking note. */
+	public void setBookingNote(final BookingNote bookingNote) {
+		this.bookingNote = bookingNote;
+	}
 	
 	/** Gets item operation.
 	 * @return item operation. */

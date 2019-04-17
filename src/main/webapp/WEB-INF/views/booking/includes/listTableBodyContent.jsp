@@ -22,7 +22,7 @@
 	<tr>
 		<td>
 			<a class="actionMenuItem" 
-				href="${pageContext.request.contextPath}/booking/bookingsActionMenu?booking=${booking.id}"></a>
+				href="${pageContext.request.contextPath}/booking/bookingRowActionMenu.html?booking=${booking.id}"></a>
 		<td>
 			<fmt:formatDate var="bookingDate" value="${booking.date}" pattern="MM/dd/yyyy"/>
 			<c:out value="${bookingDate}"/>

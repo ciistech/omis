@@ -35,7 +35,7 @@ import omis.dao.impl.hibernate.GenericHibernateDaoImpl;
 public class BookingNoteDaoHibernateImpl 
 	extends GenericHibernateDaoImpl<BookingNote> implements BookingNoteDao {
 	private static final String FIND_BY_BOOKING_QUERY_NAME = 
-			"findBookingNotebyBooking";
+			"findBookingNotesByBooking";
 	private static final String FIND_BY_BOOKING_DATE_DESCRIPTION_QUERY_NAME
 		= "findBookingNoteByBookingDateAndDescription";
 	private static final String 

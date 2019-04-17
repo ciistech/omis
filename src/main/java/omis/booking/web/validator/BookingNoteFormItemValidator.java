@@ -17,60 +17,33 @@
  */
 package omis.booking.web.validator;
 
-import java.util.List;
-
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import omis.booking.web.form.BookingForm;
 import omis.booking.web.form.BookingNoteFormItem;
 
-/** Validator for booking form.
+/** Validator for booking note form item.
  * @author Ryan Johns
- * @version 0.1.0 (Apr 10, 2019)
+ * @version 0.1.0 (Apr 11, 2019) 
  * @since OMIS 3.0 */
-public class BookingFormValidator implements Validator {
-	private BookingNoteFormItemValidator bookingNoteValidator;
-	
-	/* Field names. */
-	private static final String BOOKING_NOTE_ITEMS_PATH_NAME 
-		= "bookingNoteItems[%1d]";
-	
+public class BookingNoteFormItemValidator implements Validator {
+
 	/** Constructor. */
-	public BookingFormValidator(
-			final BookingNoteFormItemValidator bookingNoteValidator) { 
-		this.bookingNoteValidator = bookingNoteValidator;
-	}
+	public BookingNoteFormItemValidator() {
 	
+	}
 	/** {@inheritDoc} */
 	@Override
 	public boolean supports(final Class<?> clazz) {
-		return BookingForm.class.isAssignableFrom(clazz);
+		return BookingNoteFormItem.class.isAssignableFrom(clazz);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void validate(Object target, Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "date", "note.description.empty");
 		ValidationUtils.rejectIfEmpty(errors, "date", "date.empty");
-		ValidationUtils.rejectIfEmpty(errors, "bookingNumber",
-				"bookingNumber.empty");
-		ValidationUtils.rejectIfEmpty(errors, "category", 
-				"bookingAdmissionCategory.empty");
-		ValidationUtils.rejectIfEmpty(errors, "commitSource", 
-				"bookingCommitSourceCategory.empty");
-	
-		List<BookingNoteFormItem> bookingNoteItems = ((BookingForm) target)
-				.getBookingNoteItems();
-		if (bookingNoteItems != null) {
-			int index=0;
-			for (BookingNoteFormItem noteItem: bookingNoteItems) {
-				errors.pushNestedPath(String.format(BOOKING_NOTE_ITEMS_PATH_NAME, index));
-				this.bookingNoteValidator.validate(noteItem, errors);
-				errors.popNestedPath();
-				index++;
-			}
-		}
 	}
 
 }

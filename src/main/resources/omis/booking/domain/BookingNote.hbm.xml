@@ -25,7 +25,7 @@
 			<property name="date" column="`UPDATE_DATE`" not-null="true" />
 		</component>
 	</class>
-	<query name="findBookingNoteByBooking"><![CDATA[
+	<query name="findBookingNotesByBooking"><![CDATA[
 		from omis.booking.domain.BookingNote bookingNote
 		where bookingNote.booking = :booking
 	]]></query>
