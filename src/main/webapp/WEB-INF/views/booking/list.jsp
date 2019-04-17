@@ -25,18 +25,19 @@
 <fmt:bundle basename="omis.booking.msgs.booking">
 <head>
 	<title>
-		<fmt:message key="bookingsHeaderLabel"/>
+		<fmt:message key="bookingsLabel"/>
 		<jsp:include page="/WEB-INF/views/offender/includes/offenderNameSummary.jsp"/>
 	</title>
 	<jsp:include page="/WEB-INF/views/common/includes/headerOffenderListResources.jsp"/>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/booking/scripts/bookings.js?VERSION=1"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/offender/includes/offenderHeader.jsp"/>
 	<h1>
-		<a class="actionMenuItem" id="actionMenuLink" href="${pageContext.request.contextPath}/booking/bookingsActionMenu.html?offender=${offender.id}"></a>
-		<fmt:message key="bookingsHeaderLabel"/>
+		<a class="actionMenuItem" id="actionMenuLink" href="${pageContext.request.contextPath}/booking/bookingsActionMenu.html?offender=${offenderSummary.id}"></a>
+		<fmt:message key="bookingsLabel"/>
 	</h1>
-		<jsp:include page="includes/listTable.jsp"/>
+	<jsp:include page="includes/listTable.jsp"/>
 </body>
 </fmt:bundle>
 </html>
