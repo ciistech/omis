@@ -61,6 +61,6 @@
 		  and photo not in (:excludedPhotos)
 	]]></query>
 	<sql-query name="findNextPhotoFilename"><![CDATA[
-		select "PHOTO_FILENAME_SEQ".nextval from dual
+		select nextval('"PHOTO_FILENAME_SEQ"')
 	]]></sql-query>
 </hibernate-mapping>
