@@ -103,6 +103,7 @@ public class UserAccountDaoHibernateImpl
 					.getNamedQuery(FIND_BY_USERNAME_CASE_INSENSITIVE_QUERY_NAME)
 					.setParameter(USERNAME_PARAM_NAME, username.toUpperCase());
 		}
+		
 		UserAccount userAccount = (UserAccount) query.uniqueResult();
 		return userAccount;
 	}

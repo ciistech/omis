@@ -10,7 +10,7 @@
 <hibernate-mapping package="omis.user.domain">
 	<class entity-name="omis.user.domain.UserAccount"
 	       proxy="omis.user.domain.UserAccount"
-	       name="omis.user.domain.impl.UserAccountDeferredSecurityImpl"
+	       name="omis.user.domain.impl.UserAccountWithPasswordImpl"
 	       table="`USER_ACCOUNT`">
 	    <id name="id" column="`ID`">
 			<generator class="sequence">
@@ -18,6 +18,10 @@
 			</generator>
 		</id>
 		<property name="username" type="string" column="`USERNAME`" not-null="true" unique="true"/>
+		<property name="password" type="string" column="`PASSWORD`" not-null="true"/>
+		<property name="enabled" type="yes_no" column="`ENABLED`" not-null="true"/>
+		<property name="attempt" type="long" column="`ATTEMPT`"/>
+		<property name="passwordExpirationDate" type="date" column="`PASSWORD_EXPIRATION_DATE`"/>
 		<many-to-one name="user" entity-name="omis.person.domain.Person" column="`USER_ID`" not-null="true"/>
 	</class>
 	<query name="findUserAccounts"><![CDATA[
@@ -39,8 +43,8 @@
 		order by ua.username
 	]]></query>
 		<query name="findUserAccountByUsernameCaseInsensitive"><![CDATA[
-		from omis.user.domain.UserAccount as ua
-		where upper(ua.username) = :username
+		from omis.user.domain.UserAccount
+		where upper(username) = :username
 	]]></query>
 	<query name="searchUserAccountsCaseInsensitive"><![CDATA[
 		select userAccount

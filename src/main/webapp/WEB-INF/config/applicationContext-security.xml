@@ -131,7 +131,7 @@
   <beans:bean id="sas"
               class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
     <beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
-    <beans:property name="maximumSessions" value="1" />
+    <beans:property name="maximumSessions" value="2" />
   </beans:bean>
 
   <beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
@@ -190,6 +190,12 @@
 	<beans:bean id="securitySource" class="org.springframework.jndi.JndiObjectFactoryBean">
   	<beans:property name="jndiName" value="${hibernate.connection.datasource}"/>
 	</beans:bean>
+	
+	 <beans:bean id="myEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg name="strength" value="11"/>
+    </beans:bean>
+	
+	
     <authentication-manager>
       <authentication-provider>
         <jdbc-user-service data-source-ref="securitySource"
@@ -198,8 +204,10 @@
                                                           from "USER_ACCOUNT" ua
                                                             inner join "USER_GROUP_MEMBERSHIP" ugm on ua."ID" = ugm."ACCOUNT_ID"
                                                             inner join "USER_GROUP" ug on ugm."GROUP_ID" = ug."ID"
-                                                            inner join "USER_ROLE_ASSIGNMENT" ugra on ug."ID" = ura."GROUP_ID"
-                                                            inner join "USER_ROLE" ur on ura."ROLE_ID" = ur."ID"'/>
+                                                            inner join "USER_ROLE_ASSIGNMENT" ura on ug."ID" = ura."GROUP_ID"
+                                                            inner join "USER_ROLE" ur on ura."ROLE_ID" = ur."ID"
+                                                            where "USERNAME" = ?'/>
+      	<password-encoder ref="myEncoder"/>
       </authentication-provider>
     </authentication-manager>
   </beans:beans>
