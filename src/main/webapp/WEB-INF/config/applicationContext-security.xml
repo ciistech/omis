@@ -157,7 +157,7 @@
   
   <!-- Authentication manager and configuration file for LDAP authentication and authorization -->
   
-  <beans:beans profile="standalone,test,prod,preprod">
+  <beans:beans profile="standalone,prod,preprod">
 
       <!-- Security properties -->
   
@@ -182,7 +182,7 @@
   
   <!-- Authentication manager for JDBC authentication and authorization. -->
    
-  <beans:beans profile="dev">
+  <beans:beans profile="dev,test">
 	<beans:bean id="datasourceProperties"
     class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
   		<beans:property name="location" value="classpath:hibernate.properties"/>
