@@ -6,7 +6,7 @@
 	<class entity-name="omis.bedplacement.domain.BedPlacement"
 		proxy="omis.bedplacement.domain.BedPlacement"
 		name="omis.bedplacement.domain.impl.BedPlacementImpl"
-		table="BED_PLACEMENT">
+		table="`BED_PLACEMENT`">
 		<id name="id" column="`ID`" type="java.lang.Long">
 			<generator class="sequence">
 				<param name="sequence">`BED_PLACEMENT_SEQ`</param>
